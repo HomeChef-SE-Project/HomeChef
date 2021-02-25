@@ -5,7 +5,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 app.use(express.static("public"));
-
+app.disable("x-powered-by");
 passport.use(new GoogleStrategy({
     clientID: "510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com",
     clientSecret: "OhULxj6fEjSAydwM2a-uiSn1",
