@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
 },
     function (request, accessToken, refreshToken, profile, done) {
         if (profile) {
-            user = profile;
+            var user = profile;
             return done(null, user);
         }
         else {
@@ -108,8 +108,7 @@ app.get("/:username",function(request,response){
     response.sendFile(__dirname + "/public/user_home.html")
 })
 
-app.post("/login", function (request, response) {
-})
+
 
 
 
