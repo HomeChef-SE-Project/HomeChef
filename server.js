@@ -9,7 +9,7 @@ app.use(express.static("public"));
 passport.use(new GoogleStrategy({
     clientID: "510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com",
     clientSecret: "OhULxj6fEjSAydwM2a-uiSn1",
-    callbackURL: "http://localhost:5000/return",
+    callbackURL: "http://localhost:3000/return",
     passReqToCallback: true
 },
     function (request, accessToken, refreshToken, profile, done) {
@@ -114,8 +114,8 @@ app.post("/login", function (request, response) {
 
 
 
-app.listen(5000, function () {
-    console.log("Server running on port 5000");
+app.listen(3000, function () {
+    console.log("Server running on port 3000");
 });
 
 
