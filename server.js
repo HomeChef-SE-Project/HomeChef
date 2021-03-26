@@ -2,19 +2,22 @@ const express = require('express');
 const nodemon = require('nodemon');
 const app = express();
 var passport = require('passport');
+const session = require('express-session');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 app.use(express.static("public"));
-app.disable("x-powered-by");
+
+
+
 passport.use(new GoogleStrategy({
     clientID: "510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com",
     clientSecret: "OhULxj6fEjSAydwM2a-uiSn1",
-    callbackURL: "http://localhost:3000/return",
+    callbackURL: "http://localhost:5000/return",
     passReqToCallback: true
 },
     function (request, accessToken, refreshToken, profile, done) {
         if (profile) {
-            var user = profile;
+           var user = profile;
             return done(null, user);
         }
         else {
@@ -58,12 +61,14 @@ app.get('/auth/google/callback',
         successRedirect: '/auth/google/success',
         failureRedirect: '/auth/google/failure'
     }), function (req, res) {
+        
         res.redirect('/');
     })
 
     app.get('/return', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
+        
       res.redirect('/user_details');
 
     });
@@ -73,7 +78,7 @@ app.get('/auth/google/callback',
 
 app.get("/", function (request, response) {   // this is on the server side . Server gets request from clients and we send them repsonses
     console.log(__dirname + "/home.html")
-    response.sendFile(__dirname + "/public/home.html");
+    response.sendFile(__dirname + "/public/index.html");
 
 })
 
@@ -113,8 +118,6 @@ app.get("/:username",function(request,response){
 
 
 
-app.listen(3000, function () {
-    console.log("Server running on port 3000");
+app.listen(5000, function () {
+    console.log("Server running on port 5000");
 });
-
-
