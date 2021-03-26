@@ -78,8 +78,9 @@ app.get('/auth/google/callback',
 
 app.get("/", function (request, response) {   // this is on the server side . Server gets request from clients and we send them repsonses
     console.log(__dirname + "/home.html")
+    console.log(response)
     response.sendFile(__dirname + "/public/index.html");
-
+    
 })
 
 // 510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com -Oauth ID
@@ -101,7 +102,9 @@ app.post("/login", function (request, response) {
 })
 
 app.get("/user_details", function (request, response) {
+    console.log(response)
     response.sendFile(__dirname + "/public/user_details.html");
+    
 })
 
 app.post("/user_details",function(request,response){
