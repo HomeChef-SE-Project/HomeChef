@@ -99,7 +99,7 @@ function storeDB(profile) {
                 },
                 userDetailsBool: true,
             });
-            user_details_bool: true;
+            //user_details_bool: true;
             console.log("made it true!!");
             console.log(userdata);
             userdata.save();
