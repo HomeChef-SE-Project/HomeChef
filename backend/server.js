@@ -12,7 +12,7 @@ require("dotenv").config();
 const hm = require("./routes/homemaker");
 app.use(express.static("public"));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors()); //{ origin: "http://localhost:3000" }
 
 app.use("/homemakers", hm);
 
@@ -63,7 +63,7 @@ passport.use(
             clientID:
                 "510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com",
             clientSecret: "OhULxj6fEjSAydwM2a-uiSn1",
-            callbackURL: "http://localhost:5000/return",
+            callbackURL: "http://localhost:3000/return",
             passReqToCallback: true,
         },
         function (request, accessToken, refreshToken, profile, done) {
@@ -137,6 +137,9 @@ app.get(
     passport.authenticate("google", {
         scope: ["email", "profile"],
     })
+    // function (request, response) {
+    //     response.redirect("/return");
+    // }
 );
 
 app.get(
@@ -152,7 +155,9 @@ app.get(
 
 app.get(
     "/return",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("google", {
+        failureRedirect: "http://localhost:3000/",
+    }),
     function (request, response) {
         var userly = true;
         console.log("128" + user_details_bool);
@@ -160,29 +165,37 @@ app.get(
         // user_details_bool = tempUser.userDetailsBool;
         console.log("134");
         console.log("134" + user_details_bool);
-        User.find({ googleID: user_global.id }, function (err, docs) {
-            console.log("got in!!");
-            console.log(docs);
-            var userly = false;
-            if (docs.length) {
-                userly = docs[0].userDetailsBool;
-                console.log(user_details_bool);
-                console.log(docs[0].userDetailsBool);
-            }
+        // User.find({ googleID: user_global.id }, function (err, docs) {
+        //     console.log("got in!!");
+        //     console.log(docs);
+        //     var userly = false;
+        //     if (docs.length) {
+        //         userly = docs[0].userDetailsBool;
+        //         console.log(user_details_bool);
+        //         console.log(docs[0].userDetailsBool);
+        //     }
 
-            if (!userly) {
-                //response.send(user_global.id);
-                console.log("Hii there!" + userly);
-                response.redirect("/user_details");
-            } else {
-                //response.send(user_global.id);
-                var _url = "/user/" + user_global.id;
-                // response.redirect(_url);
-                response.redirect("http://localhost:3000" + _url);
-            }
-        });
+        //     if (!userly) {
+        //         //response.send(user_global.id);
+        //         console.log("Hii there!" + userly);
+        //         response.redirect("/user_details");
+        //     } else {
+        //         response.send(user_global.id);
+        //         //var _url = "/user/" + user_global.id;
+        //         // response.redirect(_url);
+        //         // response.redirect("http://localhost:5000" + _url);
+        //     }
+        // });
+        resoponse.redirect("/return_details");
+        //response.send(user_global);
     }
 );
+
+app.get("/return_details", function (request, response) {
+    console.log("printing user_global in return_details: ");
+    console.log(user_global);
+    response.send(user_global);
+});
 
 app.get("/", function (request, response) {
     // this is on the server side . Server gets request from clients and we send them repsonses
@@ -212,24 +225,27 @@ app.get("/user_details", function (request, response) {
 });
 //console.log(user_global)
 app.post("/user_details", function (request, response) {
-    User.updateOne(
-        { googleID: user_global.id },
-        {
-            $set: {
-                "profile.address": request.body.address,
-                "profile.mobileNumber": request.body.mobileNumber,
-            },
-        },
-        function (err, res) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(res);
-            }
-        }
-    );
     console.log(request.body);
-    response.redirect("/user/" + user_global.id);
+    console.log("hello pranith");
+    // User.updateOne(
+    //     { googleID: user_global.id },
+    //     {
+    //         $set: {
+    //             "profile.address": request.body.address,
+    //             "profile.mobileNumber": request.body.mobileNumber,
+    //         },
+    //     },
+    //     function (err, res) {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log(res);
+    //         }
+    //     }
+    // );
+    //console.log(request.body);
+
+    //response.redirect("/user/" + user_global.id);
 });
 
 app.get("/user/:userid", function (request, response) {

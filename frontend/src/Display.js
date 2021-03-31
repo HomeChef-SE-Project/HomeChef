@@ -52,6 +52,14 @@ class Display extends Component {
         );
     };
     example = () => {
+        const myStyle = {
+            backgroundImage: "url(/images/welcome-bg-resized.png)",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            width: "100vw",
+            height: "100vh",
+        };
         return (
             // <div
             //     style={{
@@ -60,12 +68,7 @@ class Display extends Component {
             //     }}
             // >
             <Zoom center>
-                <div
-                    style={{
-                        height: "96vh",
-                        backgroundImage: "url(/images/welcome-bg.jpg)",
-                    }}
-                >
+                <div style={myStyle}>
                     <Header />
                     {/* <img src="/images/welcome-bg-resized.png" /> */}
                     <div>
