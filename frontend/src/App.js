@@ -8,6 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 //import ChefScreen from "./screens/ChefScreen";
 import Display from "./Display";
 import OrderPlaced from "./components/orderplaced";
+import Signup from "./components/signupform";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
             <Route exact path="/" component={Display} />
             <Route path="/user/orderplaced" component={OrderPlaced} />
             <Route path="/user/:userid/menu" component={Menu} />
+            <Route exact path="/homechef_register" component={Signup} />
             {/* <Link to="/user/1923461238795">HomeScreen</Link>
             <Link to="/user/1923461238795/menu">Menu</Link>
             <Link to="/unreachable">User</Link>

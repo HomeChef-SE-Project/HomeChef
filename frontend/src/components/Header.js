@@ -14,9 +14,9 @@ const Header = () => {
                                 <i classname="fas fa-user"></i>
                                 Login
                             </Nav.Link>
-                            <Nav.Link href="/Sign up">
+                            <Nav.Link href="/homechef_register">
                                 <i classname="fas fa-register"></i>
-                                Sign up
+                                Want to be a HomeChef?
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
