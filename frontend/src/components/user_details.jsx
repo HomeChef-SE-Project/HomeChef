@@ -28,7 +28,8 @@ class UserDetails extends Component {
                 console.log(res);
             });
         //this.redirect = true;
-        this.props.history.push("/user/12121212");
+        console.log("userid", this.props.location.state.userid);
+        this.props.history.push(`/user/${this.props.location.state.userid}`);
     };
 
     handleChange = (event) => {
@@ -40,6 +41,7 @@ class UserDetails extends Component {
     render() {
         // if (this.redirect) return <Redirect to={`/user/${this.userid}`} />;
         // else
+        console.log(this.props.location.state.userid);
         return (
             <div>
                 <div className="container">

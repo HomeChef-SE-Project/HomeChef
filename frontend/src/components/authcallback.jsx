@@ -7,20 +7,26 @@ class AuthCallback extends Component {
         userid: 0,
     };
 
-    componentDidMount() {
+    constructor(props) {
+        super(props);
         axios.get("http://localhost:5000/return_details").then((res) => {
             console.log(res);
-            this.state.userid = res.data;
+            this.setState({ userid: res.data.id });
         });
     }
+
     render() {
+        // this.handleUserDetails();
+        // console.log(this.state.userid);
         return (
-            <Redirect
-                to={{
-                    pathname: "/user_details",
-                    state: { userid: this.state.userid },
-                }}
-            />
+            <div>
+                <Redirect
+                    to={{
+                        pathname: "/user_details",
+                        state: { userid: this.handleUserDetails },
+                    }}
+                />
+            </div>
         );
         //return <p>Returned</p>;
     }

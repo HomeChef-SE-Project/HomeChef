@@ -63,7 +63,7 @@ passport.use(
             clientID:
                 "510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com",
             clientSecret: "OhULxj6fEjSAydwM2a-uiSn1",
-            callbackURL: "http://localhost:3000/return",
+            callbackURL: "http://localhost:5000/return",
             passReqToCallback: true,
         },
         function (request, accessToken, refreshToken, profile, done) {
@@ -156,7 +156,7 @@ app.get(
 app.get(
     "/return",
     passport.authenticate("google", {
-        failureRedirect: "http://localhost:3000/",
+        //failureRedirect: "http://localhost:3000/",
     }),
     function (request, response) {
         var userly = true;
@@ -186,7 +186,7 @@ app.get(
         //         // response.redirect("http://localhost:5000" + _url);
         //     }
         // });
-        resoponse.redirect("/return_details");
+        response.redirect("http://localhost:3000/return");
         //response.send(user_global);
     }
 );
