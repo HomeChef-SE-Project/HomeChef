@@ -9,6 +9,22 @@ router.route('/').get((req,res) =>{
     .catch(err =>res.status(404).json({'Message':err}))
 });
 
+    // const homechefname = "Sontinenis home";
+    // const google_ID = 478965123015;
+    // let profile = {
+    //     email:"Nitin246@gmail.com",
+    //     name:"Nitin",
+        
+    // }
+    // //const aadhar = req.body.aadharID;
+    // const rating = 5.0;
+    // const location  = "Vijaywada";
+    // const newHomemaker = new HomeMaker({googleID:google_ID, homechefname:homechefname, location:location, profile:profile, rating:rating});
+
+    // newHomemaker.save()
+    // .then(() => res.json({message:"Home Maker added!"}))
+    // .catch((err) => res.status(404).json({message:err}));
+
 router.route('/add').post((req,res) =>{
     const id = user_global.id;
     const homechefname = req.body.homechefname;
@@ -27,6 +43,8 @@ router.route('/add').post((req,res) =>{
     .then(() => res.json({message:"Home Maker added!"}))
     .catch((err) => res.status(404).json({message:err}));
 });
+
+
 
 //yet to work on
 // router.route('/:id/addmenu').get(async (req,res) =>{

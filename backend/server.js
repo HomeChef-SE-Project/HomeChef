@@ -227,23 +227,27 @@ app.get("/user_details", function (request, response) {
 app.post("/user_details", function (request, response) {
     // console.log(request.body);
     // console.log("hello pranith");
-    // User.updateOne(
-    //     { googleID: user_global.id },
-    //     {
-    //         $set: {
-    //             "profile.address": request.body.address,
-    //             "profile.mobileNumber": request.body.mobileNumber,
-    //         },
-    //     },
-    //     function (err, res) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             console.log(res);
-    //         }
-    //     }
-    // );
-    response.send("hello");
+    User.updateOne(
+        { "googleID": user_global.id },
+        {
+           
+            $set: {
+                "profile.address": request.body.address,
+                "profile.mobileNumber": request.body.mobileNumber,
+            },
+        },
+        function (err, res) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("hello sudheer");
+                console.log(user_global.id);
+                console.log(request.body);
+                //console.log(res);
+            }
+        }
+    );
+    //response.send("hello"); 
 
     //response.redirect("/user/" + user_global.id);
 });

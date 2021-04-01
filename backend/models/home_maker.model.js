@@ -24,6 +24,7 @@ const homeMakerSchema = new Schema({
     earnings:{type:Number}, 
     profile: profileSchema,
     items: [itemSchema],
+    location:{type:String},
     available:{type:Boolean}
 })
 

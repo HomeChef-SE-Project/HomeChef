@@ -22,9 +22,9 @@ class UserDetails extends Component {
                 console.log(res.data);
                 console.log(res);
             });
-        //this.redirect = true;
+        this.redirect = true;
         console.log("userid", this.props.location.state.userid);
-        //this.props.history.push(`/user/${this.props.location.state.userid}`);
+        this.props.history.push(`/user/${this.props.location.state.userid}`);
     };
 
     handleChange = (event) => {
