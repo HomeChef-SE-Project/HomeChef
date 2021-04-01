@@ -5,29 +5,34 @@ import axios from "axios";
 class AuthCallback extends Component {
     state = {
         userid: 0,
+        isLoading: true,
     };
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
+        console.log("Authcalback_didmount");
+
         axios.get("http://localhost:5000/return_details").then((res) => {
             console.log(res);
-            this.setState({ userid: res.data.id });
+            console.log("Authcalback_post");
+            this.setState({ userid: res.data.id, isLoading: false });
         });
     }
 
     render() {
-        // this.handleUserDetails();
-        // console.log(this.state.userid);
-        return (
-            <div>
-                <Redirect
-                    to={{
-                        pathname: "/user_details",
-                        state: { userid: this.handleUserDetails },
-                    }}
-                />
-            </div>
-        );
+        if (this.state.isLoading) {
+            return <p>Loading...</p>;
+        } else {
+            return (
+                <div>
+                    <Redirect
+                        to={{
+                            pathname: "/user_details",
+                            state: { userid: this.state.userid },
+                        }}
+                    />
+                </div>
+            );
+        }
         //return <p>Returned</p>;
     }
 }

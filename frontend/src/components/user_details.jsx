@@ -11,12 +11,6 @@ class UserDetails extends Component {
         address: "",
     };
 
-    constructor(props) {
-        super(props);
-        // this.redirect = false;
-        // this.userid = 12131313131;
-    }
-
     handleSubmit = (event) => {
         event.preventDefault();
         // console.log("Clicked");
@@ -24,12 +18,13 @@ class UserDetails extends Component {
         axios
             .post("http://localhost:5000/user_details", this.state)
             .then((res) => {
+                console.log("SENT");
                 console.log(res.data);
                 console.log(res);
             });
         //this.redirect = true;
         console.log("userid", this.props.location.state.userid);
-        this.props.history.push(`/user/${this.props.location.state.userid}`);
+        //this.props.history.push(`/user/${this.props.location.state.userid}`);
     };
 
     handleChange = (event) => {

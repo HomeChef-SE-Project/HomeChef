@@ -225,8 +225,8 @@ app.get("/user_details", function (request, response) {
 });
 //console.log(user_global)
 app.post("/user_details", function (request, response) {
-    console.log(request.body);
-    console.log("hello pranith");
+    // console.log(request.body);
+    // console.log("hello pranith");
     // User.updateOne(
     //     { googleID: user_global.id },
     //     {
@@ -243,7 +243,7 @@ app.post("/user_details", function (request, response) {
     //         }
     //     }
     // );
-    //console.log(request.body);
+    response.send("hello");
 
     //response.redirect("/user/" + user_global.id);
 });

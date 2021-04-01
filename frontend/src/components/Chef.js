@@ -22,7 +22,7 @@ const Chef = ({ chef }) => {
             </Card.Text>
 
             <Card.Text as="div">
-                <div classname="my-3">Location : {chef.location}</div>
+                <div className="my-3">Location : {chef.location}</div>
             </Card.Text>
         </Card>
     );
