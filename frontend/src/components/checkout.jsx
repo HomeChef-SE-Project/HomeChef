@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useLocation } from "react-router-dom";
+//var location = null;
 class Checkout extends Component {
     state = {};
+    //items = location.state.items;
+    // location = useLocation();
+
     render() {
+        //console.log(items);
         const items = this.props.location.state.items;
         let subtotal = 0;
         for (let i = 0; i < items.length; i++) {
-            subtotal += items[i].count * items[i].cost;
+            subtotal += items[i].price * items[i].price;
         }
         return (
             <div>
@@ -16,43 +20,25 @@ class Checkout extends Component {
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
                             <span className="text-primary">Your cart</span>
                             <span className="badge bg-primary rounded-pill text-light">
-                                {items.filter((c) => c.count > 0).length}
+                                {items.filter((c) => c.price > 0).length}
                             </span>
                         </h4>
                         <ul className="list-group mb-3">
-                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                            { items.filter(item => item.price>0).map((item)=>(
+                                <li className="list-group-item d-flex justify-content-between lh-sm">
                                 <div>
-                                    <h6 className="my-0">{items[0].value}</h6>
+                                    <h6 className="my-0">{item.name}</h6>
                                     <small className="text-muted">
-                                        Qty: {items[0].count}
+                                        Qty: {item.price}
                                     </small>
                                 </div>
                                 <span className="text-muted">
-                                    Rs.{items[0].count * items[0].cost}
+                                    Rs.{item.price * item.price}   {/* items[0].count * items[0].cost */}
                                 </span>
                             </li>
-                            <li className="list-group-item d-flex justify-content-between lh-sm">
-                                <div>
-                                    <h6 className="my-0">{items[1].value}</h6>
-                                    <small className="text-muted">
-                                        Qty: {items[1].count}
-                                    </small>
-                                </div>
-                                <span className="text-muted">
-                                    Rs.{items[1].count * items[1].cost}
-                                </span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between lh-sm">
-                                <div>
-                                    <h6 className="my-0">{items[2].value}</h6>
-                                    <small className="text-muted">
-                                        Qty: {items[2].count}
-                                    </small>
-                                </div>
-                                <span className="text-muted">
-                                    Rs.{items[2].count * items[2].cost}
-                                </span>
-                            </li>
+                            ))
+                           
+                            }
                             <li className="list-group-item d-flex justify-content-between bg-light">
                                 <div className="text-success">
                                     <h6 className="my-0">Shipping</h6>

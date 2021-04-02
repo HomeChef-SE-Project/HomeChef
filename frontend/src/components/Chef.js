@@ -1,19 +1,51 @@
+import axios from "axios";
+import { useState } from "react";
 import { Card } from "react-bootstrap";
+import { useHistory } from "react-router";
 const Chef = ({ chef }) => {
     console.log("INside Chef.js page:");
     console.log(chef)
+    const history = useHistory();
+    const [items,setItems] = useState({});
+  
+    // const selectedChef = async (id) => {
+
+    //     //let id = e.target.id;
+    //     const res = await axios({
+    //         url:`http://localhost:5000/homemakers/user/${id}/menu`
+    //          ,
+    //         method: "get",
+           
+           
+    //       })
+    //  console.log("hello"+res.data);
+    //  setItems(res.data);
+    //   console.log(items)
+
+    //     history.push({
+    //         pathname : `/user/${id}/menu`,
+    //         state: {
+    //             data:items
+    //         },
+    //     })
+        
+    // }
+
+
     return (
-        <Card className="my-3 p-3 rounded">
-            <a href={`/chef/${chef._id}`}>
+        
+        <Card className="my-3 p-3 rounded"  >
+     <a href={`/user/${chef.googleID}/menu`}> 
+            {/* <a href={`/chef/${chef._id}`}> */}
                 <Card.Img src={chef.googleID} variant="top" />
-            </a>
+            {/* </a> */}
 
             <Card.Body>
-                <a href={`/user/1923461238795/menu`}>
+               
                     <Card.Title as="div">
                         <strong>{chef.homechefname}</strong>
                     </Card.Title>
-                </a>
+              
             </Card.Body>
 
             <Card.Text as="div">
@@ -25,6 +57,7 @@ const Chef = ({ chef }) => {
             <Card.Text as="div">
                 <div className="my-3">Location : {chef.location}</div>
             </Card.Text>
+            </a> 
         </Card>
     );
 };

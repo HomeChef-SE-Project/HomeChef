@@ -1,12 +1,13 @@
-import React,{Component} from "react";
+import React,{Component, useEffect, useState} from "react";
 import { Row, Col } from "react-bootstrap";
 import Chef from "../components/Chef";
 // import chefs from "../chefs";
 import axios from "axios";
 
-var chefs=[]
 
 const HomeScreen = () => {
+    
+    const [chefs,setChefs]=useState([])
     console.log("chefs in Homescreen.js:");
     console.log(chefs);
     // constructor(props)
@@ -27,6 +28,20 @@ const HomeScreen = () => {
     //     });
     // }
 
+    useEffect(()=>{
+        axios.get("http://localhost:5000/homemakers").then((res) => {
+        //console.log(res);
+        console.log("Authcalback_post");
+        //this.setState({ userid: res.data.id, isLoading: false });
+        
+        setChefs(res.data);
+        console.log("chefs data presenting below:");
+        console.log(chefs);
+    })}
+,[]);
+
+
+
     return (
         <div>
             <h1>Homemakers near you</h1>
@@ -36,7 +51,7 @@ const HomeScreen = () => {
                         <Chef key={chef.id} chef={chef} />
                     </Col>
                 ))}
-                l
+                
             </Row>
         </div>
     );

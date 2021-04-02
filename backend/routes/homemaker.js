@@ -58,14 +58,24 @@ router.route('/add').post((req,res) =>{
 //     }
 // })
 
-router.route('/:id/menu/').get( async (req,res) =>{
+router.route('/user/:id/menu/').get( async (req,res) =>{
     try{
         await HomeMaker.findOne({googleID:req.params.id}, function(err,homemaker) {
-            res.json(homemaker.items)
+          
+            if(homemaker === null ) {
+                res.json([{itemid: 1234567,
+                    name: "Biryani",
+                    price: 180,
+                    description:"Authentic flavoured rice",}])
+            }
+            else{ 
+                 res.json(homemaker.items)
+            }
+
         });
 
     }catch(err){
-        //console.log('Inside error')
+        console.log('Inside error')
         res.json({message:err})
     }
 })

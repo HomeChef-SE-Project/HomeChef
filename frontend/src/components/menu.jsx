@@ -1,76 +1,107 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import Item from "./item";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import randVal from "./randval";
+import axios from "axios";
+//import {withRouter} from 'react-router-dom';
 
-class Menu extends Component {
-    state = {
-        items: [
-            [
-                {
-                    id: 1,
-                    value: "Biriyani",
-                    cost: 200,
-                    count: 0,
-                },
-                {
-                    id: 2,
-                    value: "Paneer 65",
-                    cost: 150,
-                    count: 0,
-                },
-                {
-                    id: 3,
-                    value: "Paneer Butter Masala",
-                    cost: 250,
-                    count: 0,
-                },
-            ],
+const Menu = ()=> {
+    
+    const location = useLocation();
+    console.log(location.pathname);
+    let stringarray=(location.pathname).split("/")
+    console.log(stringarray)
+    let chefId=stringarray[2];
+    const [items,setItems] = useState([]);
+    const [menu,setMenu]=useState({
+        items:[],
+        cartCount:0
+    })
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/homemakers/user/${chefId}/menu`).then((res) => {
+            //console.log(res);
+            console.log("Authcalback_post");
+            //this.setState({ userid: res.data.id, isLoading: false });
+            
+            setItems(res.data);
+            console.log("Items data presenting below:");
+            console.log(items);})
+    },[])
+  //  setItems(location.state.items);
+    console.log(items);
+    // state = {
+    //     items: [
+    //         [
+    //             {
+    //                 id: 1,
+    //                 value: "Biriyani",
+    //                 cost: 200,
+    //                 count: 0,
+    //             },
+    //             {
+    //                 id: 2,
+    //                 value: "Paneer 65",
+    //                 cost: 150,
+    //                 count: 0,
+    //             },
+    //             {
+    //                 id: 3,
+    //                 value: "Paneer Butter Masala",
+    //                 cost: 250,
+    //                 count: 0,
+    //             },
+    //         ],
 
-            [
-                {
-                    id: 1,
-                    value: "Chikkis",
-                    cost: 45,
-                    count: 0,
-                },
-                {
-                    id: 2,
-                    value: "Vegetable Biriyani",
-                    cost: 100,
-                    count: 0,
-                },
-                {
-                    id: 3,
-                    value: "Chicken Tikka",
-                    cost: 315,
-                    count: 0,
-                },
-            ],
-        ],
-        cartCount: 0,
+    //         [
+    //             {
+    //                 id: 1,
+    //                 value: "Chikkis",
+    //                 cost: 45,
+    //                 count: 0,
+    //             },
+    //             {
+    //                 id: 2,
+    //                 value: "Vegetable Biriyani",
+    //                 cost: 100,
+    //                 count: 0,
+    //             },
+    //             {
+    //                 id: 3,
+    //                 value: "Chicken Tikka",
+    //                 cost: 315,
+    //                 count: 0,
+    //             },
+    //         ],
+    //     ],
+    //     cartCount: 0,
+    // };
+
+    // const getItems = () => {
+    //     axios.get("http://localhost:5000/").then((res) => {
+    //         console.log(res);
+    //         setItems(res.data);
+    //     });
+    // }
+
+  const  handleDecrement = (item) => {
+       // const items = [...items]; //Copies by reference
+        const index = items.indexOf(item);
+        items[index] = { ...item };
+        items[index].price--;
+        const len = items.filter((c) => c.price > 0).length;
+        setMenu({ items:items, cartCount: len });
     };
 
-    handleDecrement = (item) => {
-        const items = [...this.state.items]; //Copies by reference
-        const index = items[this.randVal].indexOf(item);
-        items[randVal][index] = { ...item };
-        items[randVal][index].count--;
-        const len = items[randVal].filter((c) => c.count > 0).length;
-        this.setState({ items, cartCount: len });
+  const  handleIncrement = (item) => {
+         //Copies by reference
+        const index = items.indexOf(item);
+        items[index] = { ...item };
+        items[index].price++;
+        const len = items.filter((c) => c.price > 0).length;
+        setMenu({ items:items, cartCount: len });
     };
 
-    handleIncrement = (item) => {
-        const items = [...this.state.items]; //Copies by reference
-        const index = items[randVal].indexOf(item);
-        items[randVal][index] = { ...item };
-        items[randVal][index].count++;
-        const len = items[randVal].filter((c) => c.count > 0).length;
-        this.setState({ items, cartCount: len });
-    };
-
-    render() {
-        console.log(randVal);
+   
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -87,9 +118,7 @@ class Menu extends Component {
                                             pathname:
                                                 "/user/1923461238795/checkout",
                                             state: {
-                                                items: this.state.items[
-                                                    randVal
-                                                ],
+                                                items:items,
                                             },
                                         }}
                                     >
@@ -100,7 +129,7 @@ class Menu extends Component {
                                             <big>Cart</big>{" "}
                                             <span className="badge bg-secondary">
                                                 <big>
-                                                    {this.state.cartCount}
+                                                    {menu.cartCount}
                                                 </big>
                                             </span>
                                         </button>
@@ -110,17 +139,48 @@ class Menu extends Component {
                         </div>
                     </div>
                 </nav>
-                {this.state.items[randVal].map((item) => (
-                    <Item
-                        key={item.id}
-                        item={item}
-                        onDecrement={this.handleDecrement}
-                        onIncrement={this.handleIncrement}
-                    />
+               { items.map((item) => (
+                   
+                <div
+                style={{ minWidth: 600 }}
+                className="card w-50 card text-white bg-secondary mb-3 m-4"
+            >
+                <div className="card-body">
+                    <h5 className="card-title">{item.name}</h5>
+                    <span className="card-text">
+                        Rs. {item.price}
+                    </span>
+                    <span style={{ float: "right" }}>
+                        <button
+                            disabled={!item.price}
+                            onClick={() =>
+                                handleDecrement(item)
+                            }
+                            className="btn btn-dark bg-dark "
+                        >
+                            <b>-</b>
+                        </button>{" "}
+                        <span
+                            style={{ fontSize: 20 }}
+                            className=""
+                        >
+                            {item.price}
+                        </span>{" "}
+                        <button
+                            onClick={() =>
+                                handleIncrement(item)
+                            }
+                            className="btn btn-dark bg-dark "
+                        >
+                            <b>+</b>
+                        </button>
+                    </span>
+                </div>
+            </div>
                 ))}
             </div>
         );
     }
-}
+
 
 export default Menu;
