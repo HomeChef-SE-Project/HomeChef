@@ -13,6 +13,7 @@ const itemSchema = new Schema({
     name:{type:String},
     price:{type:Number,required:true},
     description:{type:String},
+    count : {type:Number, default:0}
 
 })
 

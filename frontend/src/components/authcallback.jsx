@@ -5,6 +5,7 @@ import axios from "axios";
 class AuthCallback extends Component {
     state = {
         userid: 0,
+        user_bool : true,
         isLoading: true,
     };
 
@@ -14,7 +15,7 @@ class AuthCallback extends Component {
         axios.get("http://localhost:5000/return_details").then((res) => {
             console.log(res);
             console.log("Authcalback_post");
-            this.setState({ userid: res.data.id, isLoading: false });
+            this.setState({ userid: res.data.googleObject.id, isLoading: false , user_bool:res.data.firstLog });
         });
     }
 
@@ -22,11 +23,21 @@ class AuthCallback extends Component {
         if (this.state.isLoading) {
             return <p>Loading...</p>;
         } else {
+            var path = null;
+            console.log(this.state.user_bool)
+            if(this.state.user_bool === false)
+            {
+                path = `/user/${this.state.userid}`
+            }
+            else{
+                path = "/user_details";
+            }
             return (
                 <div>
+                {}
                     <Redirect
                         to={{
-                            pathname: "/user_details",
+                            pathname: path ,
                             state: { userid: this.state.userid },
                         }}
                     />

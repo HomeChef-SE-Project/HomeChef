@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("user", userSchema);
 
-var user_global = null;
+var user_global = {googleObject:null , firstLog: true}
 var user_details_bool = false;
 
 passport.use(
@@ -68,7 +68,7 @@ passport.use(
         },
         function (request, accessToken, refreshToken, profile, done) {
             if (profile) {
-                user_global = profile;
+                user_global.googleObject = profile;
                 console.log("At line 65");
                 console.log(user_global);
                 storeDB(profile);
@@ -87,6 +87,7 @@ function storeDB(profile) {
             console.log(err);
         }
         if (docs.length) {
+            user_global.firstLog = false 
         } else {
             const userdata = new User({
                 googleID: profile.id,
@@ -97,8 +98,10 @@ function storeDB(profile) {
                     photourl: profile.picture,
                     wallet: 0,
                 },
+                
                 userDetailsBool: true,
             });
+            user_global.firstLog = true
             //user_details_bool: true;
             console.log("made it true!!");
             console.log(userdata);
@@ -228,7 +231,7 @@ app.post("/user_details", function (request, response) {
     // console.log(request.body);
     // console.log("hello pranith");
     User.updateOne(
-        { "googleID": user_global.id },
+        { "googleID": user_global.googleObject.id },
         {
            
             $set: {
@@ -241,7 +244,7 @@ app.post("/user_details", function (request, response) {
                 console.log(err);
             } else {
                 console.log("hello sudheer");
-                console.log(user_global.id);
+                console.log(user_global.googleObject.id);
                 console.log(request.body);
                 //console.log(res);
             }
@@ -253,7 +256,7 @@ app.post("/user_details", function (request, response) {
 });
 
 app.get("/user/:userid", function (request, response) {
-    User.findOne({ googleID: user_global.id }, function (err, foundUser) {
+    User.findOne({ googleID: user_global.googleObject.id }, function (err, foundUser) {
         //response.send(foundUser);
     });
     //   response.send()

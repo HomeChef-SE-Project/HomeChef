@@ -1,9 +1,10 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState , useCallback } from "react";
 import Item from "./item";
 import { Link, useLocation } from "react-router-dom";
 import randVal from "./randval";
 import axios from "axios";
 //import {withRouter} from 'react-router-dom';
+
 
 const Menu = ()=> {
     
@@ -17,6 +18,17 @@ const Menu = ()=> {
         items:[],
         cartCount:0
     })
+
+    const getBadgeClasses = useCallback((item) => {
+        let classes = "badge bg-";
+        classes +=
+            item.count === 0
+                ? "warning text-dark"
+                : "primary text-light";
+        return classes;
+    }, []);
+    
+
     useEffect(()=>{
         axios.get(`http://localhost:5000/homemakers/user/${chefId}/menu`).then((res) => {
             //console.log(res);
@@ -87,8 +99,8 @@ const Menu = ()=> {
        // const items = [...items]; //Copies by reference
         const index = items.indexOf(item);
         items[index] = { ...item };
-        items[index].price--;
-        const len = items.filter((c) => c.price > 0).length;
+        items[index].count--;
+        const len = items.filter((c) => c.count > 0).length;
         setMenu({ items:items, cartCount: len });
     };
 
@@ -96,8 +108,8 @@ const Menu = ()=> {
          //Copies by reference
         const index = items.indexOf(item);
         items[index] = { ...item };
-        items[index].price++;
-        const len = items.filter((c) => c.price > 0).length;
+        items[index].count++;
+        const len = items.filter((c) => c.count > 0).length;
         setMenu({ items:items, cartCount: len });
     };
 
@@ -152,7 +164,7 @@ const Menu = ()=> {
                     </span>
                     <span style={{ float: "right" }}>
                         <button
-                            disabled={!item.price}
+                            disabled={!item.count}
                             onClick={() =>
                                 handleDecrement(item)
                             }
@@ -162,9 +174,9 @@ const Menu = ()=> {
                         </button>{" "}
                         <span
                             style={{ fontSize: 20 }}
-                            className=""
+                            className={getBadgeClasses(item)}
                         >
-                            {item.price}
+                            {item.count}
                         </span>{" "}
                         <button
                             onClick={() =>

@@ -17,9 +17,9 @@ class Item extends Component {
                 className="card w-50 card text-white bg-secondary mb-3 m-4"
             >
                 <div className="card-body">
-                    <h5 className="card-title">{this.props.item.value}</h5>
+                    <h5 className="card-title">{this.props.item.name}</h5>
                     <span className="card-text">
-                        Rs. {this.props.item.cost}
+                        Rs. {this.props.item.price}
                     </span>
                     <span style={{ float: "right" }}>
                         <button

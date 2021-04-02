@@ -1,6 +1,7 @@
 import React,{Component, useEffect, useState} from "react";
 import { Row, Col } from "react-bootstrap";
 import Chef from "../components/Chef";
+import Header from "../components/Header2"
 // import chefs from "../chefs";
 import axios from "axios";
 
@@ -44,6 +45,7 @@ const HomeScreen = () => {
 
     return (
         <div>
+            <Header />
             <h1>Homemakers near you</h1>
             <Row>
                 {chefs.map((chef) => (

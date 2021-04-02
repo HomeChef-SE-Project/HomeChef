@@ -25,6 +25,10 @@ router.route('/').get((req,res) =>{
     // .then(() => res.json({message:"Home Maker added!"}))
     // .catch((err) => res.status(404).json({message:err}));
 
+    HomeMaker.aggregate([{
+        $addFields : {'items.count' : 0}
+    }])
+
 router.route('/add').post((req,res) =>{
     const id = user_global.id;
     const homechefname = req.body.homechefname;
@@ -57,6 +61,8 @@ router.route('/add').post((req,res) =>{
 //         res.json(message:err)
 //     }
 // })
+
+
 
 router.route('/user/:id/menu/').get( async (req,res) =>{
     try{
