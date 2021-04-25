@@ -39,7 +39,7 @@ const homeMakerSchema = new Schema({
     available:{type:Boolean},
     nReviews:{type:Number},
     currentOrders : [orderSchema],
-    prevOrders : []
+    prevOrders : [orderSchema],
 })
 
 const homeMaker = mongoose.model('home_maker', homeMakerSchema);
