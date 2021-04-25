@@ -11,6 +11,7 @@ require("dotenv").config();
 let frontendUrl = require("./deployment.js");
 
 const hm = require("./routes/homemaker");
+const homeMaker = require("./models/home_maker.model.js");
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(cors()); //{ origin: "http://localhost:3000" }
@@ -52,6 +53,7 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
 });
+
 
 const User = mongoose.model("user", userSchema);
 

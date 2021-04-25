@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-
+const mongoose = require('mongoose')
+const schema = mongoose.Schema
+// export the models, the admin one, wait i will do it
 const profileSchema = new Schema({
     email:{type:String},
     name:{type:String} ,
@@ -23,24 +22,23 @@ const orderSchema = new Schema({
     orderid : {Number},
     items : [itemSchema],
     date : {type:Date},
-    status : {type: String}
+    status : {type:String}
 })
 
 
-const homeMakerSchema = new Schema({
+const deliverySchema = new Schema({
     googleID:{type:String, required:true, unique:true},
-    homechefname:{type:String},
+    agentname:{type:String},
     rating:{type:Number},  
     aadharID: {type: Number},
     earnings:{type:Number}, 
     profile: profileSchema,
-    items: [itemSchema],
     location:{type:String},
     available:{type:Boolean},
     nReviews:{type:Number},
-    currentOrders : [orderSchema],
-    prevOrders : []
+    currentOrder : orderSchema,
+    prevOrder : [orderSchema]
 })
 
-const homeMaker = mongoose.model('home_maker', homeMakerSchema);
-module.exports = homeMaker;
+const delivery_agent = mongoose.model('delivery_agent', deliverySchema);
+module.exports = delivery_agent;

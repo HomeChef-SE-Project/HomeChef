@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 const profileSchema = new Schema({
     email:{type:String},
     name:{type:String} ,
@@ -19,14 +18,6 @@ const itemSchema = new Schema({
 
 })
 
-const orderSchema = new Schema({
-    orderid : {Number},
-    items : [itemSchema],
-    date : {type:Date},
-    status : {type: String}
-})
-
-
 const homeMakerSchema = new Schema({
     googleID:{type:String, required:true, unique:true},
     homechefname:{type:String},
@@ -37,10 +28,14 @@ const homeMakerSchema = new Schema({
     items: [itemSchema],
     location:{type:String},
     available:{type:Boolean},
-    nReviews:{type:Number},
-    currentOrders : [orderSchema],
-    prevOrders : []
+    nReviews:{type:Number}
 })
 
-const homeMaker = mongoose.model('home_maker', homeMakerSchema);
-module.exports = homeMaker;
+const adminSchema = new Schema({
+    googleID:{type:String, required:true, unique:true},
+    adminname:{type:String},
+    pendingReq : [homeMakerSchema] 
+})
+
+const admin = mongoose.model('admin', adminSchema);
+module.exports = admin;
