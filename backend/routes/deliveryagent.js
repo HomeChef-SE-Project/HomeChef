@@ -1,10 +1,10 @@
 const app = require('express').Router();
-let deliveryAgent = require('../models/delivery_agent.model');
+let deliveryAgent = require('../models/delivery.model');
 let user_global = require('../server');
 
-app.route('/').get((req,res) =>{
+app.route('/:id').get((req,res) =>{
     deliveryAgent.find()
-    .then(users => res.json(users))
+    .then(agent => res.json(agent))
     .catch(err =>res.status(404).json({'Message':err}))
 });
 
@@ -15,7 +15,7 @@ app.route('/').get((req,res) =>{
     //     name:"Nitin",
         
     // }
-    // //const aadhar = req.body.aadharID;
+    // const aadhar = req.body.aadharID;
     // const rating = 5.0;
     // const location  = "Vijaywada";
     // const newHomemaker = new HomeMaker({googleID:google_ID, homechefname:homechefname, location:location, profile:profile, rating:rating});
@@ -30,7 +30,13 @@ app.route('/').get((req,res) =>{
 
 app.route('/:id/profile').get((req,res) =>{
     deliveryAgent.findOne({googleID: req.params.id})
-    .then(user => res.json(user))
+    .then(user => {
+        if(user==null){
+            console.log('No admins')
+        }
+        else{ 
+            res.json(user) }
+    })
     .catch(err =>res.status(404).json({'Message':err}))
 
 });

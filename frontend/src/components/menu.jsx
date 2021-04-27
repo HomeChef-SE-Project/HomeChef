@@ -30,6 +30,7 @@ const Menu = ()=> {
     
 
     useEffect(()=>{
+        localStorage.setItem('chefId', chefId);
         axios.get(`${backendUrl}/homemakers/user/${chefId}/menu`).then((res) => {
             //console.log(res);
             console.log("Authcalback_post");
@@ -41,52 +42,7 @@ const Menu = ()=> {
     },[])
   //  setItems(location.state.items);
     console.log(items);
-    // state = {
-    //     items: [
-    //         [
-    //             {
-    //                 id: 1,
-    //                 value: "Biriyani",
-    //                 cost: 200,
-    //                 count: 0,
-    //             },
-    //             {
-    //                 id: 2,
-    //                 value: "Paneer 65",
-    //                 cost: 150,
-    //                 count: 0,
-    //             },
-    //             {
-    //                 id: 3,
-    //                 value: "Paneer Butter Masala",
-    //                 cost: 250,
-    //                 count: 0,
-    //             },
-    //         ],
-
-    //         [
-    //             {
-    //                 id: 1,
-    //                 value: "Chikkis",
-    //                 cost: 45,
-    //                 count: 0,
-    //             },
-    //             {
-    //                 id: 2,
-    //                 value: "Vegetable Biriyani",
-    //                 cost: 100,
-    //                 count: 0,
-    //             },
-    //             {
-    //                 id: 3,
-    //                 value: "Chicken Tikka",
-    //                 cost: 315,
-    //                 count: 0,
-    //             },
-    //         ],
-    //     ],
-    //     cartCount: 0,
-    // };
+    
 
     // const getItems = () => {
     //     axios.get("http://localhost:5000/").then((res) => {

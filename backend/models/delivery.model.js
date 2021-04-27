@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const schema = mongoose.Schema
+const Schema = mongoose.Schema
 // export the models, the admin one, wait i will do it
 const profileSchema = new Schema({
     email:{type:String},

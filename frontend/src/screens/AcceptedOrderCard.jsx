@@ -10,16 +10,9 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red, green, grey, white } from "@material-ui/core/colors";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import CheckIcon from '@material-ui/icons/Check';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
 import DoneIcon from '@material-ui/icons/Done';
 import Chip from '@material-ui/core/Chip';
 import CloseIcon from '@material-ui/icons/Close';
@@ -70,7 +63,7 @@ const WhiteTextTypography = withStyles({
 	},
 })(Typography);
 
-const OrderCard = (props) => {
+const AcceptedOrderCard = (props) => {
 	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState(false);
 	const [done, setDone] = React.useState(false);
@@ -130,20 +123,14 @@ const OrderCard = (props) => {
 			<CardActions disableSpacing>
                 <Button variant="contained" color="primary" href= {props.id+ "#details"}>
                     Get Details
-                </Button>               
-				<Chip
-        			label="Accept"
+                </Button>
+                          
+                <Chip
+        			label="Done"
         			clickable
         			color="primary"
         			onDelete={handleDelete}
         			deleteIcon={<DoneIcon />}
-      			/>
-      			<Chip
-        			label="Reject"
-        			clickable
-        			color="secondary"
-        			onDelete={handleDelete}
-        			deleteIcon={<CloseIcon />}
       			/>
             
 			</CardActions>
@@ -151,4 +138,4 @@ const OrderCard = (props) => {
 	);
 };
 
-export default OrderCard;
+export default AcceptedOrderCard;

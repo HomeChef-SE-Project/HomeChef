@@ -14,7 +14,8 @@ import UserDetails from "./components/user_details";
 import AuthCallback from "./components/authcallback";
 import HomeMaker from "./screens/HomeMaker";
 import delboy from "./screens/delboy";
-import CollapsibleTable from "./screens/adminAccept"
+import CollapsibleTable from "./screens/adminAccept";
+import AcceptedOrders from "./screens/AcceptedOrders";
 
 function App() {
     return (
@@ -28,9 +29,11 @@ function App() {
             <Route exact path="/homechef_register" component={Signup} />
             <Route exact path="/user_details" component={UserDetails} />
             <Route exact path="/return" component={AuthCallback} />
-            <Route path="/homechef_login" component={HomeMaker} exact />
-            <Route path="/agent_login" component={delboy} exact />
-            <Route path="/admin_login" component={CollapsibleTable} exact />
+            <Route path="/homechef/:homechefid" component={HomeMaker} exact />
+            <Route path="/agent/:agentid" component={delboy} exact />
+            <Route path="/admin/:adminid" component={CollapsibleTable} exact />
+            <Route path="/Accepted_Orders" component={AcceptedOrders} exact />
+            {/*<Route path="/My_Menu" component={MyMenu} exact />*/}
             {/* <Link to="/user/1923461238795">HomeScreen</Link>
             <Link to="/user/1923461238795/menu">Menu</Link>
             <Link to="/unreachable">User</Link>

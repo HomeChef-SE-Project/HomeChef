@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const profileSchema = new Schema({
     email:{type:String},
     name:{type:String} ,
-    phone:{type:Number},
+    phone:{type:String},
     address:{type:String},
     imageUrl : {type:String},
 })
@@ -22,7 +22,7 @@ const homeMakerSchema = new Schema({
     googleID:{type:String, required:true, unique:true},
     homechefname:{type:String},
     rating:{type:Number},  
-    aadharID: {type: Number},
+    aadharID: {type: String},
     earnings:{type:Number}, 
     profile: profileSchema,
     items: [itemSchema],
@@ -34,6 +34,7 @@ const homeMakerSchema = new Schema({
 const adminSchema = new Schema({
     googleID:{type:String, required:true, unique:true},
     adminname:{type:String},
+    profile: profileSchema, 
     pendingReq : [homeMakerSchema] 
 })
 

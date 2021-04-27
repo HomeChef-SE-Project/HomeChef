@@ -3,14 +3,75 @@ import { motion } from "framer-motion";
 //import { Container, Row, Col } from "react-grid-system";
 import { Form, Button, Container, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import backendUrl from "../deployment"
 
 class Signup extends Component {
-	state = {};
+	
+	state = {
+		email: "",
+		firstname: "",
+		lastname: "",
+		address: "",
+		mobile: "",
+		aadhar: ""
+	}
+	
+	// constructor(props, context) {
+    //     super(props, context);
+
+    //     this.state = { description: '' };
+    // }
+
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+	postData = () => {
+		console.log("Inside post")
+		axios
+		.post(`${backendUrl}/admin/add`, this.state)
+		// .then((res) => {
+		// 	console.log(res.data)
+		// 	console.log('sending homemaker form');
+		// 	// console.log('Submitted homemaker form');
+		// 	// console.log(this.state);
+		// 	alert("Your data has succesfully been sent for verification")
+		// 	this.props.history.push(`/`);
+		// });
+		console.log('Submitted homemaker form');
+		console.log('After axios post')
+		alert("Your data has succesfully been sent for verification")
+		this.props.history.push(`/`);
+	}
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+		console.log('inside onsubmit')
+		//console.log(this.state)
+		this.postData();
+
+        // fetch(this.props.formAction, {
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({description: this.state.description})
+        // });
+
+        //this.setState({description: ''});
+    }
 	render() {
 		return (
 			<div style={{ border: "20px" }}>
 				<Container>
-					<Form>
+					<Form
+					// action={`${backendUrl}/admin/add`}
+                    // method={"post"}
+                    onSubmit={this.handleSubmit}
+					>
 						<Form.Row>
 							<Col>
 								<motion.div
@@ -32,8 +93,11 @@ class Signup extends Component {
 									<Form.Group controlId="formBasicEmail">
 										<Form.Label>Email address</Form.Label>
 										<Form.Control
+											name="email"
 											type="email"
 											placeholder="Enter email"
+											value={this.state.email}
+											onChange={this.onChange}
 										/>
 										<Form.Text className="text-muted">
 											We'll never share your email with
@@ -66,7 +130,11 @@ class Signup extends Component {
 										controlId="formFirstName"
 									>
 										<Form.Label>First Name</Form.Label>
-										<Form.Control />
+										<Form.Control
+											name="firstname" 
+											value={this.state.firstname}
+											onChange={this.onChange}
+										/>
 									</Form.Group>
 								</motion.div>
 							</Col>
@@ -89,7 +157,11 @@ class Signup extends Component {
 								>
 									<Form.Group controlId="formLastName">
 										<Form.Label>Last Name</Form.Label>
-										<Form.Control />
+										<Form.Control 
+											name="lastname"
+											value={this.state.lastname}
+											onChange={this.onChange}
+										/>
 									</Form.Group>
 								</motion.div>
 							</Col>
@@ -112,7 +184,12 @@ class Signup extends Component {
 						>
 							<Form.Group as={Col} controlId="formAddress">
 								<Form.Label>Address</Form.Label>
-								<Form.Control placeholder="1234 street ringroad Hyderabad" />
+								<Form.Control 
+									name="address"
+									placeholder="1234 street ringroad Hyderabad" 
+									value={this.state.address}
+									onChange={this.onChange}
+								/>
 							</Form.Group>
 						</motion.div>
 						<Form.Row>
@@ -135,7 +212,12 @@ class Signup extends Component {
 								>
 									<Form.Group as={Col} controlId="formMobile">
 										<Form.Label>Contact Number</Form.Label>
-										<Form.Control type="number" />
+										<Form.Control
+											name="mobile" 
+											type="number"
+											value={this.state.mobile}
+											onChange={this.onChange}
+										/>
 									</Form.Group>
 								</motion.div>
 							</Col>
@@ -158,7 +240,11 @@ class Signup extends Component {
 								>
 									<Form.Group controlId="formAadhar">
 										<Form.Label>Aadhar Number</Form.Label>
-										<Form.Control />
+										<Form.Control
+											name="aadhar" 
+											value={this.state.aadhar}
+											onChange={this.onChange}
+										/>
 									</Form.Group>
 								</motion.div>
 							</Col>
@@ -226,7 +312,7 @@ class Signup extends Component {
 								duration: 1,
 							}}
 						>
-							<Button variant="primary" type="submit" href="/">
+							<Button variant="primary" type="submit">
 								Submit
 							</Button>
 						</motion.div>

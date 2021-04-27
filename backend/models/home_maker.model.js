@@ -34,11 +34,11 @@ const homeMakerSchema = new Schema({
     aadharID: {type: Number},
     earnings:{type:Number}, 
     profile: profileSchema,
-    items: [itemSchema],
+    items: [itemSchema] ,
     location:{type:String},
     available:{type:Boolean},
     nReviews:{type:Number},
-    currentOrders : [orderSchema],
+    currentOrders : orderSchema,
     prevOrders : [orderSchema],
 })
 

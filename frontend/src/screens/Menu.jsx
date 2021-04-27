@@ -2,13 +2,13 @@ import React from 'react'
 import { makeStyles, Theme, createStyles , withStyles} from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import OrderCard from "./ordercard";
-import orders from "../orders";
+import MenuCard from "./MenuCard";
+import menu from "../mymenu";
 import Header from "../components/Header4";
 
 const WhiteTextTypography = withStyles({
 	root: {
-		color: "#FFFFFF",
+		color: "dark",
 		opacity: 0.8,
 	},
 })(Typography);
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
 		root: {
 			display: "flex",
 			flexWrap: "wrap",
-			backgroundColor: "#202040",
+			backgroundColor: "FFFFFF",
 			minWidth: "200vh",
 			minHeight: "100vh",
 			justifyContent: "space-between",
@@ -38,18 +38,16 @@ const useStyles = makeStyles((theme) =>
 	})
 );
 
-const HomeMaker = () => {
+const MyMenu = () => {
     const classes = useStyles();
     
-    const listorders = orders.map((c) => (
+    const listmenu = menu.map((c) => (
         <Grid item className={classes.indvCell}>
-            <OrderCard
-            imgsrc={c.imgsrc}
+            <MenuCard
             title={c.title}
-            subtitle={c.subtitle}
-            descr={c.descr}
-            rating={c.rating}
             bg={c.bg}
+			price={c.price}
+			descr={c.descr}
             />
         </Grid>
     ));
@@ -59,13 +57,13 @@ const HomeMaker = () => {
 		<Grid container className={classes.root}>
 			<Grid item md={12}>
 			<WhiteTextTypography align="center" variant = "h4" pading="20px">
-				Pending Orders
+				Current Menu
 			</WhiteTextTypography> 
 			</Grid>
-            {listorders}
+            {listmenu}
 		</Grid>
 		</div>
 	);
 };
 
-export default HomeMaker
+export default MyMenu

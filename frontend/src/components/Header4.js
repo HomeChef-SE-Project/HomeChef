@@ -9,10 +9,14 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
-                        <Nav.Link href="/dashboard"><i classname='fas fa-register'></i>
-                            Dashboard</Nav.Link>
-                        <Nav.Link href="/"><i classname='fas fa-register'></i>
-                            Log out</Nav.Link>
+                        <Nav.Link href="/Accepted_Orders"><i classname='fas fa-user'></i>
+                            Accepted Orders</Nav.Link>
+                        <Nav.Link href="/My_Menu"><i classname='fas fa-user'></i>
+                            My Menu</Nav.Link>
+                        <Nav.Link href="/Add_Menu"><i classname='fas fa-user'></i>
+                            Add Menu</Nav.Link>
+                        <Nav.Link href="/Order_Food"><i classname='fas fa-register'></i>
+                            Order food</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

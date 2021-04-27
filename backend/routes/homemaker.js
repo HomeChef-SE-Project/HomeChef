@@ -9,35 +9,33 @@ router.route('/').get((req,res) =>{
     .catch(err =>res.status(404).json({'Message':err}))
 });
 
-    // const homechefname = "Sontinenis home";
-    // const google_ID = 478965123015;
+    // const homechefname = "Sudheer's home";
+    // const google_ID = 111318644952078645712;
     // let profile = {
-    //     email:"Nitin246@gmail.com",
-    //     name:"Nitin",
+    //     email:"f20180199@hyderabad.bits-pilani.ac.in",
+    //     name:"Sudheer",
         
     // }
     // //const aadhar = req.body.aadharID;
     // const rating = 5.0;
-    // const location  = "Vijaywada";
+    // const location  = "Bangalore";
     // const newHomemaker = new HomeMaker({googleID:google_ID, homechefname:homechefname, location:location, profile:profile, rating:rating});
 
     // newHomemaker.save()
-    // .then(() => res.json({message:"Home Maker added!"}))
-    // .catch((err) => res.status(404).json({message:err}));
 
-    HomeMaker.aggregate([{
-        $addFields : {'items.count' : 0}
-    }])
+    // HomeMaker.aggregate([{
+    //     $addFields : {'items.count' : 0}
+    // }])
 
 router.route('/add').post((req,res) =>{
-    const id = user_global.id;
+    //const id = user_global.id;
     const homechefname = req.body.homechefname;
-    const google_ID = user_global.id;
+    const google_ID = null;
     let profile = {
-        email:user_global.email,
-        name:user_global.name,
-        phone:user_global.phone,
-        address:req.body.address
+        email:req.body.profile.email,
+        name:user_global.req.body.homechefname,
+        phone:req.body.profile.phone,
+        address:req.body.profile.address
     }
     const aadhar = req.body.aadharID;
 
@@ -48,18 +46,21 @@ router.route('/add').post((req,res) =>{
     .catch((err) => res.status(404).json({message:err}));
 });
 
-router.route('/:id').get((req, res)=>{
+router.route('/:id').get(async (req, res)=>{
     try{
+        console.log('requested homemakers')
+        console.log(req.params.id)
         await HomeMaker.findOne({googleID:req.params.id}, function(err, content){
             if(content== null){
-                console.log('No homemaker found')
-                res.json({Message: "Please register to HomeChef!"})
+                //console.log('No homemaker found')
             }
             else {
                 console.log('Homemaker found')
                 console.log(content)
                 res.json(content.currentOrders)
             }
+        }).then(prom=>{
+            console.log('Homemakers obtained')
         })
     }
     
@@ -67,6 +68,20 @@ router.route('/:id').get((req, res)=>{
         res.json({Message:"Error while retrieving HomeMaker orders"})
     }
 })
+
+
+router.route('/:id/addmenu').post((req,res) =>{
+    //const id = user_global.id;
+    let itemlist = req.body
+    HomeMaker.updateOne(
+        {googleID:req.params.id},
+        {$push: {
+            items:itemlist
+        }}
+        
+    )
+});
+
 
 //yet to work on
 // router.route('/:id/addmenu').get(async (req,res) =>{
@@ -115,5 +130,7 @@ router.route('/user/:id/menu/').get( async (req,res) =>{
 //         res.json({message:err})
 //     }
 // })
+
+
 
 module.exports = router;

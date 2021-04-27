@@ -2,19 +2,19 @@ import axios from "axios";
 import { Component } from "react";
 import backendUrl from "./deployment";
 
-var orders = []
+var pending = []
 
-class orderRetrieve extends Component{
+class pendingRetrieve extends Component{
 
     onComponentMount(){
-        axios.get(`${backendUrl}/homemakers/${localStorage.getItem('userid')}`).then((res) => {
+        axios.get(`${backendUrl}/admin/${localStorage.getItem('userid')}`).then((res) => {
         //console.log(res);
-        console.log("Homemakers landing page");
+        console.log("Admin landing page");
         //this.setState({ userid: res.data.id, isLoading: false });
         
-        orders = res.data;  // 
-        console.log("current orders presenting below:");
-        console.log(orders);
+        pending = res.data;  // 
+        console.log("pending list presenting below:");
+        console.log(pending);
     });
     }
 }
@@ -82,4 +82,4 @@ class orderRetrieve extends Component{
 //     },
 // ]
 
-export default orders
+export default pending

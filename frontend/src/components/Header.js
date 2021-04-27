@@ -13,21 +13,7 @@ const Header = () => {
                         <Nav className="ml-auto">
                             <Nav.Link href={`${backendUrl}/auth/google`}>
                                 <i classname="fas fa-user"></i>
-                                Customer Login
-                            </Nav.Link>
-                
-                            <Nav.Link href="/admin_login">
-                                <i classname="fas fa-user"></i>
-                                Admin Login
-                            </Nav.Link>
-                            <Nav.Link href="/agent_login">
-                                <i classname="fas fa-user"></i>
-                                Agent Login
-                            </Nav.Link>
-
-                            <Nav.Link href="/homechef_login">
-                                <i classname="fas fa-user"></i>
-                                HomeChef Login
+                                Login
                             </Nav.Link>
                             <Nav.Link href="/homechef_register">
                                 <i classname="fas fa-register"></i>

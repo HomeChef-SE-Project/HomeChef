@@ -16,12 +16,16 @@ import { Done, Close } from "@material-ui/icons";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { red, green } from "@material-ui/core/colors";
+import pending_list from "../pending"
+import axios from "axios";
+import backendUrl from "../deployment"
+import Header from "../components/Header3";
 
 const useRowStyles = makeStyles({
 	root: {
 		"& > *": {
 			borderBottom: "unset",
-			backgroundColor: "#202060",
+			backgroundColor: "#59994D",
 			boxShadow: "0 20px 100px -12px rgba(0,0,0,0.8)",
 			//borderCollapse: "separate",
 			//borderSpacing: " 0 10px",
@@ -29,7 +33,7 @@ const useRowStyles = makeStyles({
 		},
 	},
 	table: {
-		backgroundColor: "#202040",
+		backgroundColor: "#FFFFFF",
 		//mWidth: "100vh",
 		minHeight: "100vh",
 		//borderCollapse: "separate",
@@ -41,7 +45,7 @@ const useRowStyles = makeStyles({
 	gr: {
 		display: "flex",
 		flexWrap: "wrap",
-		backgroundColor: "#202040",
+		backgroundColor: "#FFFFFF",
 		minWidth: "100vh",
 		minHeight: "100vh",
 		justifyContent: "space-between",
@@ -54,10 +58,11 @@ const useRowStyles = makeStyles({
 
 const WhiteTextTypography = withStyles({
 	root: {
-		color: "#FFFFFF",
+		color: "FFFFFF",
 		opacity: 0.6,
 	},
 })(Typography);
+
 
 function Row(props) {
 	const { row } = props;
@@ -85,19 +90,19 @@ function Row(props) {
 					</IconButton>
 				</TableCell>
 				<TableCell component="th" scope="row">
-					<WhiteTextTypography>{row.name}</WhiteTextTypography>
+					<WhiteTextTypography>{row.homechefname}</WhiteTextTypography>
 				</TableCell>
 				<TableCell align="right">
-					<WhiteTextTypography>{row.contact}</WhiteTextTypography>
+					<WhiteTextTypography>{row.profile.phone}</WhiteTextTypography>
 				</TableCell>
 				<TableCell align="right">
-					<WhiteTextTypography>{row.email}</WhiteTextTypography>
+					<WhiteTextTypography>{row.profile.email}</WhiteTextTypography>
 				</TableCell>
 				<TableCell align="right">
-					<WhiteTextTypography>{row.aadhar}</WhiteTextTypography>
+					<WhiteTextTypography>{row.aadharID}</WhiteTextTypography>
 				</TableCell>
 				<TableCell align="right">
-					<WhiteTextTypography>{row.backgscore}</WhiteTextTypography>
+					<WhiteTextTypography>{Math.random()*10}</WhiteTextTypography>
 				</TableCell>
 				<TableCell align="right">
 					<IconButton
@@ -138,110 +143,155 @@ function Row(props) {
 	);
 }
 
-const arr = [
-	{
-		id: 1234,
-		name: "Ms.Sandhya",
-		contact: 8328592676,
-		email: "sandhyagupta6@gmail.com",
-		aadhar: 345623785643,
-		backgscore: 8.2,
-		review:
-			"A decent HomeMaker who is a wonderful chef. She is trying to be independent by selling her recipies",
-	},
-	{
-		id: 2345,
-		name: "Ms.Durba",
-		contact: 7654834657,
-		email: "durbe4@yahoo.com",
-		aadhar: 856473594675,
-		backgscore: 4.3,
-		review:
-			"A decent HomeMaker who is a wonderful chef. She is trying to be independent by selling her recipies",
-	},
-	{
-		id: 4567,
-		name: "Mr.Abhinav",
-		contact: 9775468673,
-		email: "abhinavkapoor3@gamil.com",
-		aadhar: 636483546785,
-		backgscore: 6.0,
-		review:
-			"A decent HomeMaker who is a wonderful chef. She is trying to be independent by selling her recipies",
-	},
-];
+// const arr = [
+// 	{
+// 		id: 1234,
+// 		name: "Ms.Sandhya",
+// 		contact: 8328592676,
+// 		email: "sandhyagupta6@gmail.com",
+// 		aadhar: 345623785643,
+// 		backgscore: 8.2,
+// 		review:
+// 			"A decent HomeMaker who is a wonderful chef. She is trying to be independent by selling her recipies",
+// 	},
+// 	{
+// 		id: 2345,
+// 		name: "Ms.Durba",
+// 		contact: 7654834657,
+// 		email: "durbe4@yahoo.com",
+// 		aadhar: 856473594675,
+// 		backgscore: 4.3,
+// 		review:
+// 			"A decent HomeMaker who is a wonderful chef. She is trying to be independent by selling her recipies",
+// 	},
+// 	{
+// 		id: 4567,
+// 		name: "Mr.Abhinav",
+// 		contact: 9775468673,
+// 		email: "abhinavkapoor3@gamil.com",
+// 		aadhar: 636483546785,
+// 		backgscore: 6.0,
+// 		review:
+// 			"A decent HomeMaker who is a wonderful chef. She is trying to be independent by selling her recipies",
+// 	},
+// ];
+// function getArr() {
+	
+// }
+
 
 export default function CollapsibleTable() {
+	
+	const [isLoading, setLoading] = React.useState(true);
+	const [onlyOnce, setOnlyOnce] = React.useState(true);
+	let pending = [];
+	let arr = [];
+	if(onlyOnce) {
+		axios.get(`${backendUrl}/admin/${localStorage.getItem('userid')}`).then((res) => {
+		//console.log(res);
+			console.log("Admin landing page");
+			console.log("res.data = ")
+			console.log(res.data)
+			//this.setState({ userid: res.data.id, isLoading: false });
+			
+			pending = res.data;  // 
+			console.log("pending list presenting below:");
+			console.log(pending);
+			arr = pending;
+			setLoading(false);
+			setOnlyOnce(false);
+		});
+	}
 	const classes = useRowStyles();
 	const [rows, decline] = React.useState(arr);
 	const [approved, approve] = React.useState([]);
 
-	const handleDecline = (id) => {
-		decline(rows.filter((r) => r.id !== id));
-		console.log("delete called", id);
+	const handleDecline = (email) => {
+		decline(rows.filter((r) => r.profile.email !== email));
+		axios.post(`${backendUrl}/admin/del`, rows.filter((r) => r.profile.email !== email)).then((res)=>{
+			console.log('Deleted Request from database')
+		})
+		console.log("delete called", email);
 	};
-	const handleApprove = (id) => {
-		approve(approved.concat(rows.filter((r) => r.id === id)));
-		handleDecline(id);
+	const handleApprove = (email) => {
+		approve(approved.concat(rows.filter((r) => r.profile.email === email)));
+		axios.post(`${backendUrl}/homemakers/add`, rows.filter((r) => r.profile.email !== email)).then((res)=>{
+			console.log('sending r:')
+			console.log(rows.filter((r) => r.profile.email !== email))
+			console.log('Removed homemaker')
+		})
+		
+		handleDecline(email);
 	};
-
-	return (
-		<Grid conatiner className={classes.gr}>
-			<WhiteTextTypography align="center" variant="h3" padding="10px">
-				Pending Approvals
-			</WhiteTextTypography>
-			<TableContainer component={Paper} className={classes.table}>
-				<Table aria-label="collapsible table">
-					<TableHead className={classes.root}>
-						<TableRow>
-							<TableCell />
-							<TableCell>
-								<WhiteTextTypography>
-									Home Maker
-								</WhiteTextTypography>
-							</TableCell>
-							<TableCell align="right">
-								<WhiteTextTypography>
-									Contact
-								</WhiteTextTypography>
-							</TableCell>
-							<TableCell align="right">
-								<WhiteTextTypography>Email</WhiteTextTypography>
-							</TableCell>
-							<TableCell align="right">
-								<WhiteTextTypography>
-									Aadhar
-								</WhiteTextTypography>
-							</TableCell>
-							<TableCell align="right">
-								<WhiteTextTypography>
-									BackgroundScore
-								</WhiteTextTypography>
-							</TableCell>
-							<TableCell align="right">
-								<WhiteTextTypography>
-									Approve
-								</WhiteTextTypography>
-							</TableCell>
-							<TableCell align="right">
-								<WhiteTextTypography>
-									Decline
-								</WhiteTextTypography>
-							</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody className={classes.root}>
-						{rows.map((row) => (
-							<Row
-								key={row.id}
-								row={row}
-								onDecline={handleDecline}
-								onApprove={handleApprove}
-							/>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
-		</Grid>
-	);
+	if(isLoading) return <p>Loading...</p>;
+	else {
+		// if(onlyOnce) {
+		// 	setOnlyOnce(false);
+		// 	console.log("printing arr aka pending_list")
+		// 	console.log(pending_list)
+			
+		// 	console.log("arr = ");
+		// 	console.log(arr);
+		// }
+		return (
+			<div>
+			<Header />
+			<Grid conatiner className={classes.gr}>
+				<h3>Pending Approvals</h3>
+				<TableContainer component={Paper} className={classes.table}>
+					<Table aria-label="collapsible table">
+						<TableHead className={classes.root}>
+							<TableRow>
+								<TableCell />
+								<TableCell>
+									<WhiteTextTypography>
+										Home Maker
+									</WhiteTextTypography>
+								</TableCell>
+								<TableCell align="right">
+									<WhiteTextTypography>
+										Contact
+									</WhiteTextTypography>
+								</TableCell>
+								<TableCell align="right">
+									<WhiteTextTypography>Email</WhiteTextTypography>
+								</TableCell>
+								<TableCell align="right">
+									<WhiteTextTypography>
+										Aadhar
+									</WhiteTextTypography>
+								</TableCell>
+								<TableCell align="right">
+									<WhiteTextTypography>
+										BackgroundScore
+									</WhiteTextTypography>
+								</TableCell>
+								<TableCell align="right">
+									<WhiteTextTypography>
+										Approve
+									</WhiteTextTypography>
+								</TableCell>
+								<TableCell align="right">
+									<WhiteTextTypography>
+										Decline
+									</WhiteTextTypography>
+								</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody className={classes.root}>
+							{rows.map((row) => (
+								<Row
+									key={row.profile.email}
+									row={row}
+									onDecline={handleDecline}
+									onApprove={handleApprove}
+								/>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Grid>
+			</div>
+		);
+	}
 }

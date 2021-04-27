@@ -1,11 +1,43 @@
 import React, { Component } from "react";
 import { Link, useLocation } from "react-router-dom";
 //var location = null;
+import axios from "axios";
+import backendUrl from "../deployment"
+
+
 class Checkout extends Component {
-    state = {};
     //items = location.state.items;
     // location = useLocation();
-
+    constructor(props) {
+        super(props);
+        this.state = {};
+    
+        // This binding is necessary to make `this` work in the callback
+        this.onSubmit = this.onSubmit.bind(this);
+      }
+    sendData = (sendarray) => {
+        console.log(sendarray);
+        axios.post(`${backendUrl}/user/${localStorage.getItem('userid')}/addorder`,{items:sendarray,vendorID:localStorage.getItem('chefId') } ).then((res)=>{
+			console.log('sending user cart details')
+			console.log(this.props.location.state.items)
+			console.log('Submitted homemaker form')
+		})
+    }
+      onSubmit() {
+        console.log("hello inside checkout page")
+        console.log(this.props.location.state)
+        let sendarray = [];
+        this.props.location.state.items.map((item) => 
+            sendarray.push({
+                itemid:item.itemid,
+                name:item.name,
+                price:item.price,
+                description:item.description
+            })
+        )
+        console.log(sendarray);
+        this.sendData(sendarray);
+      }
     render() {
         //console.log(items);
         const items = this.props.location.state.items;
@@ -104,91 +136,13 @@ class Checkout extends Component {
                             </div>
                         </div>
 
-                        {/* <div className="row gy-3">
-                            <div className="col-md-6">
-                                <label htmlFor="cc-name" className="form-label">
-                                    Name on card
-                                </label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="cc-name"
-                                    placeholder=""
-                                    required
-                                    defaultChecked
-                                />
-                                <small className="text-muted">
-                                    Full name as displayed on card
-                                </small>
-                                <div className="invalid-feedback">
-                                    Name on card is required
-                                </div>
-                            </div>
-
-                            <div className="col-md-6">
-                                <label
-                                    htmlFor="cc-number"
-                                    className="form-label"
-                                >
-                                    Credit card number
-                                </label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="cc-number"
-                                    placeholder=""
-                                    required
-                                    defaultChecked
-                                />
-                                <div className="invalid-feedback">
-                                    Credit card number is required
-                                </div>
-                            </div>
-
-                            <div className="col-md-3">
-                                <label
-                                    htmlFor="cc-expiration"
-                                    className="form-label"
-                                >
-                                    Expiration
-                                </label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="cc-expiration"
-                                    placeholder=""
-                                    required
-                                    defaultChecked
-                                />
-                                <div className="invalid-feedback">
-                                    Expiration date required
-                                </div>
-                            </div>
-
-                            <div className="col-md-3">
-                                <label htmlFor="cc-cvv" className="form-label">
-                                    CVV
-                                </label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="cc-cvv"
-                                    placeholder=""
-                                    required
-                                    defaultChecked
-                                />
-                                <div className="invalid-feedback">
-                                    Security code required
-                                </div>
-                            </div>
-                        </div> */}
-
                         <hr className="my-4"></hr>
                         <div>
                             <Link to={`/user/${localStorage.getItem('userid')}/orderplaced`}>
                                 <button
                                     className="w-100 row g-5 m-4 btn btn-primary btn-lg"
                                     type="submit"
+                                    onClick = {this.onSubmit}
                                 >
                                     Place Order
                                 </button>

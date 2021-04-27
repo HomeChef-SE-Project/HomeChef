@@ -11,13 +11,18 @@ require("dotenv").config();
 let frontendUrl = require("./deployment.js");
 
 const hm = require("./routes/homemaker");
-const homeMaker = require("./models/home_maker.model.js");
+const admin_r = require("./routes/admin")
+const del_r = require("./routes/deliveryagent")
+const hm_model = require("./models/home_maker.model");
+const ad_model = require("./models/admin.model");
+const del_model = require("./models/delivery.model");
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(cors()); //{ origin: "http://localhost:3000" }
 
 app.use("/homemakers", hm);
-
+app.use("/admin", admin_r)
+app.use("/delivery", del_r)
 app.use(express.static("public"));
 
 mongoose.connect(
@@ -39,25 +44,37 @@ const profileSchema = new mongoose.Schema({
     wallet: Number,
     address: String,
 });
+
+const itemSchema = new mongoose.Schema({
+    itemid: {type:Number},
+    name:{type:String},
+    price:{type:Number,required:true},
+    description:{type:String},
+    count : {type:Number, default:0}
+
+})
 const orderSchema = new mongoose.Schema({
     orderId: String,
     vendorId: String,
-    orderDetails: { items: [String], bill: Number, rating: Number },
+    items : [itemSchema], 
+    date: Date
 });
 const userSchema = new mongoose.Schema({
     googleID: String,
     profile: profileSchema,
-    orders: [String],
+    prevorders: [orderSchema],
     userDetailsBool: {
         type: Boolean,
         default: false,
     },
+    currentorder: [orderSchema],
+    money: {type: String, default:"0" }
 });
 
 
 const User = mongoose.model("user", userSchema);
 
-var user_global = {googleObject:null , firstLog: true}
+var user_global = {googleObject:null , firstLog: true, usertype: 2}
 var user_details_bool = false;
 
 passport.use(
@@ -69,11 +86,42 @@ passport.use(
             callbackURL: "/return",
             passReqToCallback: true,
         },
-        function (request, accessToken, refreshToken, profile, done) {
+        function (request, accesSsToken, refreshToken, profile, done) {
             if (profile) {
                 user_global.googleObject = profile;
+                user_global.usertype = 2;
                 console.log("At line 65");
-                console.log(user_global);
+                //console.log(user_global);
+                hm_model.findOne({googleID:user_global.googleObject.id}, async function(err, content){
+                    console.log(content)
+                    if(content== null){
+                        console.log('No homemaker found!!')
+                    }
+                    else {
+                        console.log('Homemaker found!!!')
+                        user_global.usertype = 1
+                    }
+                })
+            
+                del_model.findOne({googleID:user_global.googleObject.id}, async function(err, content){
+                    if(content== null){
+                        console.log('No del_boy found!!')
+                    }
+                    else {
+                        console.log('del_boy found!!')
+                        user_global.usertype = 3
+                    }
+                })
+            
+                ad_model.findOne({googleID:user_global.googleObject.id}, async function(err, content){
+                    if(content== null){
+                        console.log('No admin found')
+                    }
+                    else {
+                        console.log('admin found')
+                        user_global.usertype = 0
+                    }
+                })
                 storeDB(profile);
 
                 return done(null, user_global);
@@ -198,7 +246,11 @@ app.get(
     }
 );
 
-app.get("/return_details", function (request, response) {
+app.get("/return_details", async function  (request, response) {
+
+    console.log(user_global.googleObject.id);
+    
+
     console.log("printing user_global in return_details: ");
     console.log(user_global);
     response.send(user_global);
@@ -210,6 +262,21 @@ app.get("/", function (request, response) {
     //console.log(response)
     response.sendFile(__dirname + "/public/index.html");
 });
+
+app.post("/user/:id/addorder", function (req, res){
+    // need to add date further
+    console.log('working add orders')
+    console.log(req.body.items)
+    User.updateOne(
+        {"googleID": req.params.id},
+        {$set:{
+            "currentorder":{
+                "items": req.body.items,
+                "vendorId": req.body.vendorID
+            }
+        }}
+    ).then(status=> console.log(status))
+} )
 
 // 510518196201-kv9ci65083n422689ij3d4linvi4tk3g.apps.googleusercontent.com -Oauth ID
 // OhULxj6fEjSAydwM2a-uiSn1 - client secret
