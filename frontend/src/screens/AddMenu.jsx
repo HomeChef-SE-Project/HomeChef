@@ -309,7 +309,7 @@ function sendMenuToBackend(rows) {
 	axios.post(`${backendUrl}/homemakers/${localStorage.getItem('userid')}/update_menu`, sendArr).then((res) => {
 		console.log("sent updated menu");
 		console.log(res.data);
-		alert("Data sent to backend? Not in then promise");
+		alert("Menu updated successfully!");
 	});
 }
 
@@ -396,7 +396,7 @@ export default function AddMenu() {
 							variant="contained"
 							color="#B030B0"
 							onClick={() => sendMenuToBackend(rows)}
-							//href={`/homechef/${localStorage.getItem('userid')}`}
+							href={`/homechef/${localStorage.getItem('userid')}`}
 						>
 							Submit
 						</Button>
