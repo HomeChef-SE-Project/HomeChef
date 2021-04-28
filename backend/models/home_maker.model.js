@@ -7,7 +7,7 @@ const profileSchema = new Schema({
     name:{type:String} ,
     phone:{type:Number},
     address:{type:String},
-    imageUrl : {type:String},
+    imageUrl : {type:String , default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgUNaoFwOOa3sOnMoc8CVUJ65bhS822etxVQ&usqp=CAU"},
 })
 
 const itemSchema = new Schema({
@@ -15,7 +15,8 @@ const itemSchema = new Schema({
     name:{type:String},
     price:{type:Number,required:true},
     description:{type:String},
-    count : {type:Number, default:0}
+    count : {type:Number, default:0},
+    imgsrc : {type:String , default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHr2hR8iBZn7Z7kq4cshO4YHgflath0MFSgA&usqp=CAU"}
 
 })
 
@@ -38,7 +39,7 @@ const homeMakerSchema = new Schema({
     location:{type:String},
     available:{type:Boolean},
     nReviews:{type:Number},
-    currentOrders : orderSchema,
+    currentOrders : [orderSchema],
     prevOrders : [orderSchema],
 })
 

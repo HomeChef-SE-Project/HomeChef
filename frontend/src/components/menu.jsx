@@ -95,7 +95,7 @@ const Menu = ()=> {
                                             className="btn btn-primary btn-lg"
                                         >
                                             <big>Cart</big>{" "}
-                                            <span className="badge bg-secondary">
+                                            <span className="badge bg-primary" style={{ color:"#FFFFFF", fontWeight:"bold" }}>
                                                 <big>
                                                     {menu.cartCount}
                                                 </big>
@@ -111,7 +111,7 @@ const Menu = ()=> {
                    
                 <div
                 style={{ minWidth: 600 }}
-                className="card w-50 card text-white bg-secondary mb-3 m-4"
+                className="card w-50 card bg-secondary mb-3 m-4"
             >
                 <div className="card-body">
                     <h5 className="card-title">{item.name}</h5>

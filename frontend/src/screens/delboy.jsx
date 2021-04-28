@@ -13,12 +13,12 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { Done, Close } from "@material-ui/icons";
-
+import Header from "../components/Header5";
 const useRowStyles = makeStyles({
 	root: {
 		"& > *": {
 			borderBottom: "unset",
-			backgroundColor: "#202060",
+			backgroundColor: "#59994D",
 			boxShadow: "0 20px 100px -12px rgba(0,0,0,0.8)",
 			//borderCollapse: "separate",
 			//borderSpacing: " 0 10px",
@@ -26,7 +26,7 @@ const useRowStyles = makeStyles({
 		},
 	},
 	table: {
-		backgroundColor: "#202040",
+		backgroundColor: "#FFFFFF",
 		//mWidth: "100vh",
 		minHeight: "100vh",
 		borderCollapse: "separate",
@@ -38,7 +38,7 @@ const useRowStyles = makeStyles({
 	gr: {
 		display: "flex",
 		flexWrap: "wrap",
-		backgroundColor: "#202040",
+		backgroundColor: "#FFFFFF",
 		minWidth: "100vh",
 		minHeight: "100vh",
 		justifyContent: "space-between",
@@ -142,6 +142,8 @@ export default function DelBoy() {
 	};
 
 	return (
+		<div>
+			<Header />
 		<Grid conatiner className={classes.gr}>
 			<WhiteTextTypography align="center" variant="h3" padding="10px">
 				Pending Order Deliveries
@@ -197,5 +199,6 @@ export default function DelBoy() {
 				</Table>
 			</TableContainer>
 		</Grid>
+		</div>
 	);
 }

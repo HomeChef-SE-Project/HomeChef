@@ -179,16 +179,40 @@ function Row(props) {
 	
 // }
 
+// function getArr() {
+// 	let pending = [];
+// 	//let isLoading = true;
+// 	axios.get(`${backendUrl}/admin/${localStorage.getItem('userid')}`).then((res) => {
+// 		//console.log(res);
+// 		console.log("Admin landing page");
+// 		console.log("res.data = ")
+// 		console.log(res.data)
+// 		//this.setState({ userid: res.data.id, isLoading: false });
+		
+// 		pending = res.data;  // 
+// 		console.log("pending list presenting below:");
+// 		console.log(pending);
+// 		//isLoading = false;
+// 	});
+	
+// 	return pending; 
+// }
+
+// let arr = await getArr();
 
 export default function CollapsibleTable() {
 	
 	const [isLoading, setLoading] = React.useState(true);
-	const [onlyOnce, setOnlyOnce] = React.useState(true);
-	let pending = [];
-	let arr = [];
-	if(onlyOnce) {
+	//const [onlyOnce, setOnlyOnce] = React.useState(true);
+	
+	//if(onlyOnce) {
+	//}
+	const [rows, decline] = React.useState([]);
+	React.useEffect(()=>{
+		let pending = [];
+		//let isLoading = true;
 		axios.get(`${backendUrl}/admin/${localStorage.getItem('userid')}`).then((res) => {
-		//console.log(res);
+			//console.log(res);
 			console.log("Admin landing page");
 			console.log("res.data = ")
 			console.log(res.data)
@@ -197,31 +221,35 @@ export default function CollapsibleTable() {
 			pending = res.data;  // 
 			console.log("pending list presenting below:");
 			console.log(pending);
-			arr = pending;
+			decline(pending);
 			setLoading(false);
-			setOnlyOnce(false);
 		});
-	}
+    },[])
+
 	const classes = useRowStyles();
-	const [rows, decline] = React.useState(arr);
+	// console.log("arr = ")
+	// console.log(arr);
 	const [approved, approve] = React.useState([]);
 
 	const handleDecline = (email) => {
 		decline(rows.filter((r) => r.profile.email !== email));
-		axios.post(`${backendUrl}/admin/del`, rows.filter((r) => r.profile.email !== email)).then((res)=>{
+		axios.post(`${backendUrl}/admin/del`, rows.filter((r) => r.profile.email === email)[0]).then((res)=>{
 			console.log('Deleted Request from database')
 		})
 		console.log("delete called", email);
 	};
 	const handleApprove = (email) => {
 		approve(approved.concat(rows.filter((r) => r.profile.email === email)));
-		axios.post(`${backendUrl}/homemakers/add`, rows.filter((r) => r.profile.email !== email)).then((res)=>{
+		let send_data = rows.filter((r) => r.profile.email === email)[0];
+		console.log("Send_data in handleApprove=")
+		console.log(send_data);
+		axios.post(`${backendUrl}/homemakers/add`, send_data).then((res)=>{
 			console.log('sending r:')
-			console.log(rows.filter((r) => r.profile.email !== email))
+			console.log(res);
+			//console.log(rows.filter((r) => r.profile.email !== email))
 			console.log('Removed homemaker')
-		})
-		
-		handleDecline(email);
+			handleDecline(email);
+		});
 	};
 	if(isLoading) return <p>Loading...</p>;
 	else {
@@ -233,65 +261,67 @@ export default function CollapsibleTable() {
 		// 	console.log("arr = ");
 		// 	console.log(arr);
 		// }
-		return (
-			<div>
-			<Header />
-			<Grid conatiner className={classes.gr}>
-				<h3>Pending Approvals</h3>
-				<TableContainer component={Paper} className={classes.table}>
-					<Table aria-label="collapsible table">
-						<TableHead className={classes.root}>
-							<TableRow>
-								<TableCell />
-								<TableCell>
-									<WhiteTextTypography>
-										Home Maker
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>
-										Contact
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>Email</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>
-										Aadhar
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>
-										BackgroundScore
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>
-										Approve
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>
-										Decline
-									</WhiteTextTypography>
-								</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody className={classes.root}>
-							{rows.map((row) => (
-								<Row
-									key={row.profile.email}
-									row={row}
-									onDecline={handleDecline}
-									onApprove={handleApprove}
-								/>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
-			</Grid>
-			</div>
-		);
+	return (
+		<div>
+		{console.log("rows = ")}
+		{console.log(rows)}
+		<Header />
+		<Grid conatiner className={classes.gr}>
+			<h3>Pending Approvals</h3>
+			<TableContainer component={Paper} className={classes.table}>
+				<Table aria-label="collapsible table">
+					<TableHead className={classes.root}>
+						<TableRow>
+							<TableCell />
+							<TableCell>
+								<WhiteTextTypography>
+									Home Maker
+								</WhiteTextTypography>
+							</TableCell>
+							<TableCell align="right">
+								<WhiteTextTypography>
+									Contact
+								</WhiteTextTypography>
+							</TableCell>
+							<TableCell align="right">
+								<WhiteTextTypography>Email</WhiteTextTypography>
+							</TableCell>
+							<TableCell align="right">
+								<WhiteTextTypography>
+									Aadhar
+								</WhiteTextTypography>
+							</TableCell>
+							<TableCell align="right">
+								<WhiteTextTypography>
+									BackgroundScore
+								</WhiteTextTypography>
+							</TableCell>
+							<TableCell align="right">
+								<WhiteTextTypography>
+									Approve
+								</WhiteTextTypography>
+							</TableCell>
+							<TableCell align="right">
+								<WhiteTextTypography>
+									Decline
+								</WhiteTextTypography>
+							</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody className={classes.root}>
+						{rows.map((row) => (
+							<Row
+								key={row.profile.email}
+								row={row}
+								onDecline={() => handleDecline(row.profile.email)}
+								onApprove={() => handleApprove(row.profile.email)}
+							/>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</Grid>
+		</div>
+	);
 	}
 }

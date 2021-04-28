@@ -29,11 +29,13 @@ router.route('/').get((req,res) =>{
 
 router.route('/add').post((req,res) =>{
     //const id = user_global.id;
+    console.log("Hello INside /homemakers/add with req as ")
+    console.log( req.body)
     const homechefname = req.body.homechefname;
-    const google_ID = null;
+    const google_ID = "42069";
     let profile = {
         email:req.body.profile.email,
-        name:user_global.req.body.homechefname,
+        name:req.body.homechefname,
         phone:req.body.profile.phone,
         address:req.body.profile.address
     }
@@ -43,13 +45,17 @@ router.route('/add').post((req,res) =>{
 
     newHomemaker.save()
     .then(() => res.json({message:"Home Maker added!"}))
-    .catch((err) => res.status(404).json({message:err}));
+    .catch((err) => res.status(301).json({message:"SUDHEER"}));
 });
 
 router.route('/:id').get(async (req, res)=>{
     try{
         console.log('requested homemakers')
         console.log(req.params.id)
+        // HomeMaker.updateOne({"profile.email" : user_global.googleObject.email},
+        // {$set: {googleID : req.params.id}})
+
+
         await HomeMaker.findOne({googleID:req.params.id}, function(err, content){
             if(content== null){
                 //console.log('No homemaker found')
@@ -70,17 +76,45 @@ router.route('/:id').get(async (req, res)=>{
 })
 
 
-router.route('/:id/addmenu').post((req,res) =>{
+router.route('/:id/update_menu').post((req,res) =>{
     //const id = user_global.id;
+    console.log("start of update menu");
+    console.log(req.body);
     let itemlist = req.body
-    HomeMaker.updateOne(
-        {googleID:req.params.id},
-        {$push: {
-            items:itemlist
-        }}
+    HomeMaker.updateOne({"googleID": req.params.id},
+        { $set: { "items":itemlist  } }
         
-    )
+    ).then(req => {
+        console.log(req);
+        res.json({message: "updated menu"})} )
 });
+
+router.route('/:id/addorder').post((req,res) =>{
+    //const id = user_global.id;
+    console.log("pushing into order");
+    console.log(req.body);
+    let itemlist = req.body
+    HomeMaker.updateOne({"googleID": req.params.id},
+        { $push: { "currentOrders":itemlist  } }
+        
+    ).then(req => {
+        console.log(req);
+        res.json({message: "updated menu"})} )
+});
+
+router.route('/:id/menu').get((req,res) =>{
+    console.log("inside id/menu with ")
+    console.log(req)
+    HomeMaker.findOne({googleID:req.params.id} , function(err,homemaker){
+        if(homemaker == null)
+        {
+            res.json([])
+        }
+        else{
+        res.json(homemaker.items)
+        }
+    })
+})
 
 
 //yet to work on
@@ -97,7 +131,7 @@ router.route('/:id/addmenu').post((req,res) =>{
 
 
 
-router.route('/user/:id/menu/').get( async (req,res) =>{
+router.route('/user/:id/menu').get( async (req,res) =>{
     try{
         await HomeMaker.findOne({googleID:req.params.id}, function(err,homemaker) {
           

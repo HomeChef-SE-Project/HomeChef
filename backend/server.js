@@ -92,12 +92,16 @@ passport.use(
                 user_global.usertype = 2;
                 console.log("At line 65");
                 //console.log(user_global);
-                hm_model.findOne({googleID:user_global.googleObject.id}, async function(err, content){
+
+                hm_model.findOne({"profile.email" : user_global.googleObject.email}, async function(err, content){
                     console.log(content)
                     if(content== null){
                         console.log('No homemaker found!!')
                     }
                     else {
+                        hm_model.updateOne({"profile.email": user_global.googleObject.email}, {$set:{
+                            "googleID": user_global.googleObject.id
+                        }}).then(req => console.log(req))
                         console.log('Homemaker found!!!')
                         user_global.usertype = 1
                     }
@@ -333,6 +337,12 @@ app.get("/user/:userid", function (request, response) {
     //   response.send()
     response.sendFile(__dirname + "/public/user_home.html");
 });
+
+app.get("/user/:userid/prev_orders",function(req,res){
+    User.findOne({ googleID: user_global.googleObject.id} , function(err,foundUser){
+        res.send(foundUser.prevorders)
+    })
+})
 
 app.listen(process.env.PORT || 5000, function () {
     console.log("Server running on port 5000");

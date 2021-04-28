@@ -16,12 +16,12 @@ import { Done, Close } from "@material-ui/icons";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { red, green } from "@material-ui/core/colors";
-
+import Header from "../components/Header4";
 const useRowStyles = makeStyles({
 	root: {
 		"& > *": {
 			borderBottom: "unset",
-			backgroundColor: "#202060",
+			backgroundColor: "#59994D",
 			boxShadow: "0 20px 100px -12px rgba(0,0,0,0.8)",
 			//borderCollapse: "separate",
 			//borderSpacing: " 0 10px",
@@ -29,7 +29,7 @@ const useRowStyles = makeStyles({
 		},
 	},
 	table: {
-		backgroundColor: "#202040",
+		backgroundColor: "#FFFFFF",
 		//mWidth: "100vh",
 		minHeight: "100vh",
 		//borderCollapse: "separate",
@@ -41,7 +41,7 @@ const useRowStyles = makeStyles({
 	gr: {
 		display: "flex",
 		flexWrap: "wrap",
-		backgroundColor: "#202040",
+		backgroundColor: "#FFFFFF",
 		minWidth: "100vh",
 		minHeight: "100vh",
 		justifyContent: "space-between",
@@ -107,6 +107,8 @@ export default function PreviousOrders() {
 		changeRow(Rowlist.filter((r) => r.id !== id));
 	};
 	return (
+		<div>
+		<Header />
 		<Grid conatiner className={classes.gr}>
 			<WhiteTextTypography align="center" variant="h3">
 				Previous Orders
@@ -143,5 +145,6 @@ export default function PreviousOrders() {
 				</Table>
 			</TableContainer>
 		</Grid>
+		</div>
 	);
 }

@@ -16,6 +16,10 @@ import HomeMaker from "./screens/HomeMaker";
 import delboy from "./screens/delboy";
 import CollapsibleTable from "./screens/adminAccept";
 import AcceptedOrders from "./screens/AcceptedOrders";
+import dashboard from "./screens/HomeMakerPie";
+import dashboard3 from "./screens/SignupLine";
+import AddMenu from "./screens/AddMenu";
+import salesdashboard from "./screens/sales";
 
 function App() {
     return (
@@ -32,7 +36,13 @@ function App() {
             <Route path="/homechef/:homechefid" component={HomeMaker} exact />
             <Route path="/agent/:agentid" component={delboy} exact />
             <Route path="/admin/:adminid" component={CollapsibleTable} exact />
-            <Route path="/Accepted_Orders" component={AcceptedOrders} exact />
+            <Route path="/admin/:adminid/homemaker_registrations" component={dashboard} exact />
+            <Route path="/admin/:adminid/no_signin" component={dashboard3} exact />
+            <Route path="/admin/:adminid/sales" component={salesdashboard} exact />
+            <Route path="/homechef/:homechefid/add_menu" component={AddMenu} exact />
+            <Route path="/homechef/:homechefid/accepted_orders" component={AcceptedOrders} exact />
+            {/* <Route path="/homechef/:homechefid/my_menu" component={dashboard} exact /> */}
+            <Route path="/homechef/:homechefid/order_food" component={HomeScreen} exact />
             {/*<Route path="/My_Menu" component={MyMenu} exact />*/}
             {/* <Link to="/user/1923461238795">HomeScreen</Link>
             <Link to="/user/1923461238795/menu">Menu</Link>

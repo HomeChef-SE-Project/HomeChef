@@ -23,15 +23,16 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import Header from "../components/Header2";
+import Header from "../components/Header4";
 import Button from "@material-ui/core/Button"
 import axios from "axios";
+import backendUrl from "../deployment";
 
 const useRowStyles = makeStyles({
 	root: {
 		"& > *": {
 			borderBottom: "unset",
-			backgroundColor: "#202060",
+			backgroundColor: "#59994D",
 			boxShadow: "0 20px 100px -12px rgba(0,0,0,0.8)",
 			//borderCollapse: "separate",
 			//borderSpacing: " 0 10px",
@@ -52,7 +53,7 @@ const useRowStyles = makeStyles({
 		flexWrap: "wrap",
 		backgroundColor: "#FFFFFF",
 		minWidth: "100vh",
-		minHeight: "100vh",
+		//minHeight: "100vh",
 		justifyContent: "space-between",
 		justifyItems: "left",
 		padding: "20px",
@@ -67,7 +68,7 @@ const useRowStyles = makeStyles({
 	},
 	textField: {
 		width: "40ch",
-		color: "#202040",
+		color: "#FFFFFF",
 	},
 });
 
@@ -274,23 +275,26 @@ function InputAdornments(props) {
 // 	},
 // ];
 
-let arr = [];
+//let arr = [];
 
-function getMenuFromBackend() {
-	axios.get(`${backendUrl}/homemaker/${localStorage.getItem('userid')}/menu`).then((res) => {
-		res.data.map((item) =>(
-			arr.push({
-				id: item.itemid,
-				Item: item.name,
-				price: item.price,
-				desc: item.description
-			})
-		));
-	});
-};
+// function getMenuFromBackend() {
+// 	axios.get(`${backendUrl}/homemaker/${localStorage.getItem('userid')}/menu`).then((res) => {
+// 		res.data.map((item) =>(
+// 			arr.push({
+// 				id: item.itemid,
+// 				Item: item.name,
+// 				price: item.price,
+// 				desc: item.description
+// 			})
+// 		));
+// 		console.log("Successfully received menu from the backend");
+// 	});
+// };
 
 function sendMenuToBackend(rows) {
-	sendArr = [];
+	console.log("Send data = ");
+	console.log(rows);
+	let sendArr = [];
 	rows.map((item) => (
 		sendArr.push({
 			itemid: item.id,
@@ -300,16 +304,40 @@ function sendMenuToBackend(rows) {
 			count: 0
 		})
 	));
-	console.log("Made sendArr");
-	axios.post(`${backendUrl}/homemaker/${localStorage.getItem('userid')}/addmenu`, sendArr)
-	console.log("sent updated menu");
-	alert("Data sent to backend successfully")
+	console.log("Made sendArr; sendArr = ");
+	console.log(sendArr);
+	axios.post(`${backendUrl}/homemakers/${localStorage.getItem('userid')}/update_menu`, sendArr).then((res) => {
+		console.log("sent updated menu");
+		console.log(res.data);
+		alert("Data sent to backend? Not in then promise");
+	});
 }
 
 export default function AddMenu() {
-	getMenuFromBackend();
+	const [isLoading, setLoading] = React.useState(true);
+	const [rows, decline] = React.useState([]);
 	const classes = useRowStyles();
-	const [rows, decline] = React.useState(arr);
+
+	React.useEffect(()=>{
+		//let isLoading = true;
+		let arr = [];
+		axios.get(`${backendUrl}/homemakers/${localStorage.getItem('userid')}/menu`).then((res) => {
+			res.data.map((item) =>(
+				arr.push({
+					id: item.itemid,
+					Item: item.name,
+					price: item.price,
+					desc: item.description
+				})
+			));
+			console.log("Successfully received menu from the backend");
+			console.log("res.data in gettingMenu = ");
+			console.log(res.data);
+			decline(arr);
+			setLoading(false);
+		});
+		//getMenuFromBackend();
+    },[])
 
 	const handleDecline = (id) => {
 		decline(rows.filter((r) => r.id !== id));
@@ -327,50 +355,53 @@ export default function AddMenu() {
 		console.log("got value:", obj.Item);
 	};
 
-	return (
-		<div>
-            <Header />
-			<Grid conatiner className={classes.gr}>
-					<h3>Current Menu</h3>
-				<TableContainer component={Paper} className={classes.table}>
-					<Table aria-label="collapsible table">
-						<TableHead className={classes.root}>
-							<TableRow>
-								<TableCell />
-								<TableCell>
-									<WhiteTextTypography>
-										Item
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell align="right">
-									<WhiteTextTypography>
-										Price
-									</WhiteTextTypography>
-								</TableCell>
-								<TableCell />
-							</TableRow>
-						</TableHead>
-						<TableBody className={classes.root}>
-							{rows.map((row) => (
-								<Row
-									key={row.id}
-									row={row}
-									onDecline={handleDecline}
-								/>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<InputAdornments addField={handleAddField} />
-				<Button
-						variant="contained"
-						color="#B030B0"
-						onClick={() => sendMenuToBackend(rows)}
-						href={`/homechef/${localStorage.getItem('userid')}`}
-					>
-						Submit
-					</Button>
-			</Grid>
-		</div>
-	);
+	if(isLoading) return <p>Loading...</p>;
+	else {
+		return (
+			<div>
+				<Header />
+				<Grid container className={classes.gr}>
+						<h3>Current Menu</h3>
+					<TableContainer component={Paper} className={classes.table}>
+						<Table aria-label="collapsible table">
+							<TableHead className={classes.root}>
+								<TableRow>
+									<TableCell />
+									<TableCell>
+										<WhiteTextTypography>
+											Item
+										</WhiteTextTypography>
+									</TableCell>
+									<TableCell align="right">
+										<WhiteTextTypography>
+											Price
+										</WhiteTextTypography>
+									</TableCell>
+									<TableCell />
+								</TableRow>
+							</TableHead>
+							<TableBody className={classes.root}>
+								{rows.map((row) => (
+									<Row
+										key={row.id}
+										row={row}
+										onDecline={handleDecline}
+									/>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<InputAdornments addField={handleAddField} />
+					<Button
+							variant="contained"
+							color="#B030B0"
+							onClick={() => sendMenuToBackend(rows)}
+							//href={`/homechef/${localStorage.getItem('userid')}`}
+						>
+							Submit
+						</Button>
+				</Grid>
+			</div>
+		);
+	}
 }

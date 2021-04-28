@@ -22,6 +22,11 @@ class Checkout extends Component {
 			console.log(this.props.location.state.items)
 			console.log('Submitted homemaker form')
 		})
+        axios.post(`${backendUrl}/homemakers/${localStorage.getItem('chefId')}/addorder`,{items:sendarray,vendorID:localStorage.getItem('chefId') } ).then((res)=>{
+			console.log('sending user cart details')
+			console.log(this.props.location.state.items)
+			console.log('Submitted homemaker form')
+		})
     }
       onSubmit() {
         console.log("hello inside checkout page")

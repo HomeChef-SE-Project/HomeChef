@@ -22,7 +22,7 @@ const useRowStyles = makeStyles({
 	root: {
 		"& > *": {
 			borderBottom: "unset",
-			backgroundColor: "#202060",
+			backgroundColor: "#59994D",
 			boxShadow: "0 20px 100px -12px rgba(0,0,0,0.8)",
 			//borderCollapse: "separate",
 			//borderSpacing: " 0 10px",
@@ -42,7 +42,7 @@ const useRowStyles = makeStyles({
 	gr: {
 		display: "flex",
 		flexWrap: "wrap",
-		backgroundColor: "#202040",
+		backgroundColor: "#59994D",
 		minWidth: "100vh",
 		minHeight: "100vh",
 		justifyContent: "space-between",
@@ -104,6 +104,8 @@ const arr = [
 		contact: 7654834657,
 	},
 ];
+
+//const arr = localStorage.getItem('accorders');
 
 export default function AcceptedOrders() {
 	const classes = useRowStyles();

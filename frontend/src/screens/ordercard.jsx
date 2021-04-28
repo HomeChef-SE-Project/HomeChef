@@ -75,23 +75,23 @@ const OrderCard = (props) => {
 	const [expanded, setExpanded] = React.useState(false);
 	const [done, setDone] = React.useState(false);
     const [close, setClose] = React.useState(false);
-	const [doneall, setDoneall] = React.useState(false);
+	const [accept, setAccept] = React.useState(false);
 
-	const handleDelete = () => {
-		console.info('You clicked the delete icon.');
-	  };
+	// const handleDelete = () => {
+	// 	console.info('You clicked the delete icon.');
+	//   };
 
-	const handleDone = () => {
-		setDone(!done);
-	};
+	// const handleDone = () => {
+	// 	setDone(!done);
+	// };
 
-    const handleClose = () => {
-        setClose(!close);
-    };
+    // const handleClose = () => {
+    //     setClose(!close);
+    // };
 
-	const handleDoneall = () => {
-		setDoneall(!doneall);
-	};
+	// const handleAccept= () => {
+	// 	setDoneall(!accept);
+	// };
 
 	const handleExpandHover = () => {
 		setExpanded(!expanded);
@@ -127,22 +127,19 @@ const OrderCard = (props) => {
 				>
 				</WhiteTextTypography>
 			</CardContent>
-			<CardActions disableSpacing>
-                <Button variant="contained" color="primary" href= {props.id+ "#details"}>
-                    Get Details
-                </Button>               
+			<CardActions disableSpacing>               
 				<Chip
         			label="Accept"
         			clickable
         			color="primary"
-        			onDelete={handleDelete}
+        			//onClick={props.onAccept(()=>(props.id))}
         			deleteIcon={<DoneIcon />}
       			/>
       			<Chip
         			label="Reject"
         			clickable
         			color="secondary"
-        			onDelete={handleDelete}
+        			//onClick={props.onReject(()=>(props.id))}
         			deleteIcon={<CloseIcon />}
       			/>
             
